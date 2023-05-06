@@ -2,6 +2,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const bodyParser = require("body-parser");
+const mongoose = require('mongoose');
 const cors = require('cors');
 dotenv.config();
 //#endregion
@@ -18,6 +19,11 @@ app.use( cors() );
 //#region 
 
 //#region Root 
+
+mongoose.connect(process.env.DATABASE);
+mongoose.connection.on("connected", () => {
+  console.log("Connected to the database");
+});
 
 app.get('/' , (req, res)=> {
     console.log('Agoura backend!');
