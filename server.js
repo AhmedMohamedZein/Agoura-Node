@@ -16,18 +16,23 @@ const app = express();
 app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded( {extended : true} ) );
 app.use( cors() );
-//#region 
+//#endregion 
+
+//#region Routes
+    
+//#endregion
 
 //#region Root 
+app.get('/' , (req, res)=> {
+    console.log('Agoura backend!');
+    res.end();
+});
+//#endregion
+
 
 mongoose.connect(process.env.DATABASE);
 mongoose.connection.on("connected", () => {
   console.log("Connected to the database");
-});
-
-app.get('/' , (req, res)=> {
-    console.log('Agoura backend!');
-    res.end();
 });
 
 app.listen(PORT, ()=>{
