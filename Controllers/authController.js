@@ -2,9 +2,14 @@ const jwt = require("jsonwebtoken");
 const userModel = require("../Models/User");
 const userValidation = require("../Utils/userValidation");
 const validate = require("../Utils/userValidation");
-const loginValidation = require("./Utils/loginValidation");
+const loginValidation = require("../Utils/loginValidation");
 
 class AuthController {
+
+  constructor() {
+    this.validateUserInput = this.validateUserInput.bind(this);
+  }
+
   async register(req, res) {
     let name = req.body.name;
     let email = req.body.email;
@@ -41,27 +46,27 @@ class AuthController {
   }
 
 
-
   async login(req, res) {
-    validateInputs = this.vlidateUserInput();
-    if (validateInputs) {
-      foundedUser = await this.checkEmail();
-      if (foundedUser) {
-        checkPassword = await this.checkPassword();
-        if(checkPassword){
-          token=this.sendToken();
-          res.header("x-auth-token",token)
-          res.status(200).send("you are logged in")
-        }
-      }
-    }
-  }
+    var validateInputs = this.validateUserInput();
+     if (validateInputs) {
+       var foundedUser = await this.checkEmail();
+       if (foundedUser) {
+       var  checkPassword = await this.checkPassword();
+         if(checkPassword){
+         var  token=this.sendToken();
+           res.header("x-auth-token",token)
+           res.status(200).send("you are logged in")
+         }
+       }
+     }
+   }
+  
 
 
 
   //check email user return true if valid else"invalid data"
-  vlidateUserInput() {
-    validation = loginValidation.validate(loginSchema, req.body);
+  validateUserInput() {
+   var validation = loginValidation(req.body);
     if (validation) {
       return true;
     } else {
@@ -74,7 +79,7 @@ class AuthController {
 
   // check user email in db
   checkEmail() {
-    foundedUser = userModel.findOne({ email: req.body.email }).exec();
+   var foundedUser = userModel.findOne({ email: req.body.email }).exec();
     if (foundedUser) {
       return foundedUser;
     } else {
@@ -88,7 +93,7 @@ class AuthController {
 
   //check password
   checkPassword(foundedUser) {
-    checkPassword = bcrypt.compare(req.body.password, foundedUser.password);
+ var  checkPassword = bcrypt.compare(req.body.password, foundedUser.password);
     if (checkPassword) {
       return checkPassword;
     } else {
