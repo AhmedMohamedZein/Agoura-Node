@@ -8,7 +8,6 @@ class AuthController {
     let password = req.body.password;
     let confirmPassword = req.body.confirmPassword;
 
-    console.log(req.body);
     let newUser = new userModel({
       name,
       email,
