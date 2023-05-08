@@ -27,8 +27,8 @@ const deleteNotification = async function(req , res){
 const deleteItemFromCart = async function(req, res) {
     const userEmail = 'ahmedzain@gmail.com'; // res.auth to get logged in user
     const userData = await user.findOne({ email: userEmail })
-  
     const itemId = req.params.id;
+
     const item = await cart.findOneAndDeleteByItem(userData._id , itemId )
   
     console.log(item);
@@ -39,11 +39,7 @@ const deleteItemFromCart = async function(req, res) {
     const userEmail = 'ahmedzain@gmail.com'; // res.auth to get logged in user
     const userData = await user.findOne({ email: userEmail })
     const itemId = req.body.id
-    const carts = await cart.findOneAndUpdate(
-        { user: userData._id }, 
-        { $addToSet: { apartments: itemId } },
-        { upsert: true, new: true }
-      )
+    const carts = await cart.findOneAndUpdateByItem(userData._id , itemId)
     console.log(carts)
   }
 

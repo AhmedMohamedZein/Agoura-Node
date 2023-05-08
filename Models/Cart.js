@@ -13,6 +13,13 @@ CartSchema.statics.findOneAndDeleteByItem = function(userID , itemID){
         {new: true}
       )
 }
+CartSchema.statics.findOneAndUpdateByItem = function(userID , itemID){
+    return this.findOneAndUpdate(
+        { user: userID._id }, 
+        { $addToSet: { apartments: itemID } },
+        { upsert: true, new: true }
+      )
+}
 
   
 module.exports = mongoose.model('Cart', CartSchema);
