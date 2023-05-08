@@ -1,5 +1,7 @@
 const userModel = require("../Models/User");
+const userValidation = require("../Utils/userValidation");
 const validate = require("../Utils/userValidation");
+const loginValidation= require("./Utils/loginValidation")
 
 class AuthController {
   async register(req, res) {
@@ -36,6 +38,33 @@ class AuthController {
         message: "validation error",
       });
   }
+
+
+
+   login(){
+    
+  }
+
+//check email user return true if valid else"invalid data" 
+  vlidateUserInput(){
+    validation=loginValidation.validate(loginSchema,req.body)
+    if(validation){
+      return true
+    }else{
+      res.json("Invalid Data")
+    }
+  }
+  //check user email 
+// checkEmail(){
+
+  
+//   userEmail=req.body.email
+
+// }
+
+
 }
+
+
 
 module.exports = new AuthController();
