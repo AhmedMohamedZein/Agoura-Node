@@ -2,12 +2,14 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
-const cors = require("cors");
-dotenv.config();
-userRoutes = require("./Routes/register");
-loginRoutes = require('./Routes/auth');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const path = require('path');
 
+dotenv.config();
+const userRoutes = require("./Routes/register");
+const loginRoutes = require('./Routes/auth');
+const HomeRoute = require(path.join(__dirname , './Routes/Home'));
 //#endregion
 
 //#region config
@@ -21,7 +23,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 //#endregion
 
-//#region Routes
 
 //#region Root
 app.get("/", (req, res) => {
@@ -30,12 +31,12 @@ app.get("/", (req, res) => {
 });
 //#endregion
 
-//#region users
+//#region 
 app.use("/register", userRoutes);
-app.use('/login' , loginRoutes)
+app.use('/login' , loginRoutes);
+app.use('/home' , HomeRoute);
 //#endregion
 
-//#endregion
 
 //#region Database Connetion
 mongoose.connect(process.env.DATABASE);
