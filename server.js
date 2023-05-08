@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
 const User = require( './Models/User' );
+const HomeRoute = require(path.join(__dirname , './Routes/Home'))
 dotenv.config();
 //#endregion
 
@@ -21,6 +22,8 @@ app.use( cors() );
 //#endregion 
 
 //#region Routes
+
+app.use('/home' , HomeRoute)
     
 //#endregion
 
@@ -31,7 +34,7 @@ app.get('/' , (req, res)=> {
     user.save().then(()=>{
       console.log('Done');
     }).catch((error)=>{
-      console.log("Error");
+      console.log(error);
     });
     res.end();
 });
