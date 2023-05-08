@@ -8,6 +8,15 @@ class AuthController {
     let password = req.body.password;
     let confirmPassword = req.body.confirmPassword;
 
+    let checkUser = userModel.findOne({ email }).exec();
+
+    if (await checkUser) {
+      return res.json({
+        success: false,
+        message: "user is already exist",
+      });
+    }
+
     let newUser = new userModel({
       name,
       email,

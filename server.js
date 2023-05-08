@@ -5,8 +5,9 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
 dotenv.config();
-userRoutes = require("./Routes/users");
+userRoutes = require("./Routes/register");
 loginRoutes = require('./Routes/auth');
+
 //#endregion
 
 //#region config
@@ -30,7 +31,7 @@ app.get("/", (req, res) => {
 //#endregion
 
 //#region users
-app.use("/users", userRoutes);
+app.use("/register", userRoutes);
 app.use('/login' , loginRoutes)
 //#endregion
 
