@@ -6,4 +6,4 @@ const CartSchema = new mongoose.Schema({
     apartments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Apartment', required: true }]
 });
   
-module.exports = mongoose.model('Notification', CartSchema);
+module.exports = mongoose.model('Cart', CartSchema);

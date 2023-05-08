@@ -28,16 +28,16 @@ app.use('/home' , HomeRoute)
 //#endregion
 
 //#region Root 
-app.get('/' , (req, res)=> {
-    console.log('Agoura backend!');
-    const user = new User ({ name : "AhmedMohamed"  , email : 'ahmedzain@gmail.com' , password : '059825' });
-    user.save().then(()=>{
-      console.log('Done');
-    }).catch((error)=>{
-      console.log(error);
-    });
-    res.end();
-});
+// app.get('/' , (req, res)=> {
+//     console.log('Agoura backend!');
+//     const user = new User ({ name : "AhmedMohamed"  , email : 'ahmedzain@gmail.com' , password : '059825' });
+//     user.save().then(()=>{
+//       console.log('Done');
+//     }).catch((error)=>{
+//       console.log(error);
+//     });
+//     res.end();
+// });
 //#endregion
 
 //#region Database Connetion

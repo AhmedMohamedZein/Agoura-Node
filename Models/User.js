@@ -8,8 +8,8 @@ const userSchema = new mongoose.Schema({
     ownedApartments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Apartment' }],
     bids: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Bid' }],
     orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }],
-    notifications: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Notification' }],
-    cart: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Apartment' }],
+    // notifications: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Notification' }],
+    // cart: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Apartment' }],
     about : { type: String, required: false }
 }, { timestamps: true } );
   
