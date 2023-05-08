@@ -37,5 +37,18 @@ const deleteItemFromCart = async function(req, res) {
     console.log(item);
   };
 
+  const addToCart = async function(req , res){
 
-module.exports = {getData , deleteNotification , deleteItemFromCart}
+    const userEmail = 'ahmedzain@gmail.com'; // res.auth to get logged in user
+    const userData = await user.findOne({ email: userEmail })
+    const itemId = req.body.id
+    const carts = await cart.findOneAndUpdate(
+        { user: userData._id }, 
+        { $addToSet: { apartments: itemId } },
+        { upsert: true, new: true }
+      )
+    console.log(carts)
+  }
+
+
+module.exports = {getData , deleteNotification , deleteItemFromCart , addToCart}
