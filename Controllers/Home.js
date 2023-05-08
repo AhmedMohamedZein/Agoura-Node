@@ -4,9 +4,8 @@ const apartment = require(path.join(__dirname , '../Models/Apartment'))
 const cart = require(path.join(__dirname , '../Models/Cart'))
 const notification = require(path.join(__dirname , '../Models/Notification'))
 
-
-const getData = async function(req , res){
-
+class HomeController {
+  async getData(req , res){
     try{
         const userEmail = 'ahmedzain@gmail.com' // res.auth to get  logged in user
         const userData = await user.findOne({email: userEmail})
@@ -19,10 +18,9 @@ const getData = async function(req , res){
         console.error(error);
         res.status(500).json({ message: 'Something went wrong' });
     }
-}
+  }
 
-const deleteNotification = async function(req , res){
-
+  async deleteNotification(req , res){
     try{
         const notificationId = req.params.id
         const notifications = await notification.updateOne({_id:notificationId} , {deleted: true})
@@ -31,10 +29,9 @@ const deleteNotification = async function(req , res){
         console.error(error);
         res.status(500).json({ message: 'Something went wrong' });
     }
-}
+  }
 
-const deleteItemFromCart = async function(req, res) {
-
+  async deleteItemFromCart(req, res) {
     try{
         const userEmail = 'ahmedzain@gmail.com'; // res.auth to get logged in user
         const userData = await user.findOne({ email: userEmail })
@@ -45,24 +42,20 @@ const deleteItemFromCart = async function(req, res) {
         console.error(error);
         res.status(500).json({ message: 'Something went wrong' });
     }
-  
-  };
+  }
 
-  const addToCart = async function(req , res){
-
+  async addToCart(req , res){
     try{
         const userEmail = 'ahmedzain@gmail.com'; // res.auth to get logged in user
         const userData = await user.findOne({ email: userEmail })
         const itemId = req.body.id
         const carts = await cart.findOneAndUpdateByItem(userData._id , itemId)
         await res.status(200).json(carts)
-
     }catch(error){
         console.error(error);
         res.status(500).json({ message: 'Something went wrong' });
     }
-    
   }
+}
 
-
-module.exports = {getData , deleteNotification , deleteItemFromCart , addToCart}
+module.exports = new HomeController();
