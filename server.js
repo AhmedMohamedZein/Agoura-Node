@@ -1,40 +1,53 @@
 //#region requires
-const express = require('express');
-const dotenv = require('dotenv');
+const express = require("express");
+const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
-const mongoose = require('mongoose');
-const cors = require('cors');
-const path = require('path');
-const User = require( './Models/User' );
+const mongoose = require("mongoose");
+const cors = require("cors");
+const path = require("path");
+const User = require("./Models/User");
 dotenv.config();
+userRoutes = require("./Routes/users");
+
 //#endregion
 
 //#region config
-const PORT = process.env.PORT || 3000; 
+const PORT = process.env.PORT || 3000;
 const app = express();
 //#endregion
 
 //#region Middlewares
-app.use( bodyParser.json() );
-app.use( bodyParser.urlencoded( {extended : true} ) );
-app.use( cors() );
-//#endregion 
-
-//#region Routes
-    
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 //#endregion
 
-//#region Root 
-app.get('/' , (req, res)=> {
-    console.log('Agoura backend!');
-    const user = new User ({ name : "AhmedMohamed"  , email : 'ahmedzain@gmail.com' , password : '059825' });
-    user.save().then(()=>{
-      console.log('Done');
-    }).catch((error)=>{
+//#region Routes
+
+//#region Root
+app.get("/", (req, res) => {
+  console.log("Agoura backend!");
+  const user = new User({
+    name: "AhmedMohamed",
+    email: "ahmedzain@gmail.com",
+    password: "059825",
+  });
+  user
+    .save()
+    .then(() => {
+      console.log("Done");
+    })
+    .catch((error) => {
       console.log("Error");
     });
-    res.end();
+  res.end();
 });
+//#endregion
+
+//#region users
+app.use("/users", userRoutes);
+//#endregion
+
 //#endregion
 
 //#region Database Connetion
@@ -44,6 +57,6 @@ mongoose.connection.on("connected", () => {
 });
 //#endregion
 
-app.listen(PORT, ()=>{
-    console.log(`Server is up : http://localhost:${PORT}`);
+app.listen(PORT, () => {
+  console.log(`Server is up : http://localhost:${PORT}`);
 });

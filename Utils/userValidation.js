@@ -22,4 +22,5 @@ const userSchema = {
   //   },
   // },
 };
+
 module.exports = ajv.compile(userSchema); //var validate =require("") ==> validate(data)
