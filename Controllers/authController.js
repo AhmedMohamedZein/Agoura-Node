@@ -1,9 +1,8 @@
-const { JsonWebTokenError } = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const userModel = require("../Models/User");
 const userValidation = require("../Utils/userValidation");
 const validate = require("../Utils/userValidation");
 const loginValidation = require("./Utils/loginValidation");
-
 
 class AuthController {
   async register(req, res) {
@@ -41,7 +40,24 @@ class AuthController {
       });
   }
 
-  login() {}
+
+
+  async login(req, res) {
+    validateInputs = this.vlidateUserInput();
+    if (validateInputs) {
+      foundedUser = await this.checkEmail();
+      if (foundedUser) {
+        checkPassword = await this.checkPassword();
+        if(checkPassword){
+          token=this.sendToken();
+          res.header("x-auth-token",token)
+          res.status(200).send("you are logged in")
+        }
+      }
+    }
+  }
+
+
 
   //check email user return true if valid else"invalid data"
   vlidateUserInput() {
@@ -53,32 +69,45 @@ class AuthController {
     }
   }
 
+
+
+
   // check user email in db
   checkEmail() {
-    foundedUser=userModel.findOne({ email: req.body.email }).exec();
-    if(foundedUser){
+    foundedUser = userModel.findOne({ email: req.body.email }).exec();
+    if (foundedUser) {
       return foundedUser;
-    }else{
-      res.status(400).send("Invalid Email or Password")
+    } else {
+      res.status(400).send("Invalid Email or Password");
     }
   }
+
+
+
+
 
   //check password
   checkPassword(foundedUser) {
-    checkPassword=bcrypt.compare(req.body.password, foundedUser.password);
-    if(checkPassword){
-      return checkPassword
-    }else{
-      res.status(400).send("Invalid Email or Password")
+    checkPassword = bcrypt.compare(req.body.password, foundedUser.password);
+    if (checkPassword) {
+      return checkPassword;
+    } else {
+      res.status(400).send("Invalid Email or Password");
     }
   }
 
 
 
-  // async function getUserByEmail(email) {
-  //   const user = await User.findOne({ email });
-  //   return user;
-  // }
+
+  //send tokin to user
+  sendToken() {
+    const payload = req.body.email;
+    const secret = "my-secret-key";
+    const token = jwt.sign(payload, secret);
+    return token;
+  }
 }
+
+
 
 module.exports = new AuthController();
