@@ -1,44 +1,42 @@
 //#region requires
-const express = require('express');
-const dotenv = require('dotenv');
+const express = require("express");
+const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
-const User = require( './Models/User' );
-const HomeRoute = require(path.join(__dirname , './Routes/Home'))
+
 dotenv.config();
+const userRoutes = require("./Routes/register");
+const loginRoutes = require('./Routes/auth');
+const HomeRoute = require(path.join(__dirname , './Routes/Home'));
 //#endregion
 
 //#region config
-const PORT = process.env.PORT || 3000; 
+const PORT = process.env.PORT || 3000;
 const app = express();
 //#endregion
 
 //#region Middlewares
-app.use( bodyParser.json() );
-app.use( bodyParser.urlencoded( {extended : true} ) );
-app.use( cors() );
-//#endregion 
-
-//#region Routes
-
-app.use('/home' , HomeRoute)
-    
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 //#endregion
 
-//#region Root 
-// app.get('/' , (req, res)=> {
-//     console.log('Agoura backend!');
-//     const user = new User ({ name : "AhmedMohamed"  , email : 'ahmedzain@gmail.com' , password : '059825' });
-//     user.save().then(()=>{
-//       console.log('Done');
-//     }).catch((error)=>{
-//       console.log(error);
-//     });
-//     res.end();
-// });
+
+//#region Root
+app.get("/", (req, res) => {
+  console.log("Agoura backend!");
+  res.end();
+});
 //#endregion
+
+//#region 
+app.use("/register", userRoutes);
+app.use('/login' , loginRoutes);
+app.use('/home' , HomeRoute);
+//#endregion
+
 
 //#region Database Connetion
 mongoose.connect(process.env.DATABASE);
@@ -47,6 +45,6 @@ mongoose.connection.on("connected", () => {
 });
 //#endregion
 
-app.listen(PORT, ()=>{
-    console.log(`Server is up : http://localhost:${PORT}`);
+app.listen(PORT, () => {
+  console.log(`Server is up : http://localhost:${PORT}`);
 });
