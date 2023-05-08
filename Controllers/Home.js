@@ -29,10 +29,7 @@ const deleteItemFromCart = async function(req, res) {
     const userData = await user.findOne({ email: userEmail })
   
     const itemId = req.params.id;
-    const item = await cart.findOneAndUpdate(
-        { user: userData._id },
-        { $pull: { apartments: itemId } }
-      )
+    const item = await cart.findOneAndDeleteByItem(userData._id , itemId )
   
     console.log(item);
   };
