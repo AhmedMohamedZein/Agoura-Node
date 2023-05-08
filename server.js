@@ -4,10 +4,9 @@ const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const path = require("path");
-const User = require("./Models/User");
 dotenv.config();
 userRoutes = require("./Routes/register");
+loginRoutes = require('./Routes/auth');
 
 //#endregion
 
@@ -27,25 +26,13 @@ app.use(cors());
 //#region Root
 app.get("/", (req, res) => {
   console.log("Agoura backend!");
-  const user = new User({
-    name: "AhmedMohamed",
-    email: "ahmedzain@gmail.com",
-    password: "059825",
-  });
-  user
-    .save()
-    .then(() => {
-      console.log("Done");
-    })
-    .catch((error) => {
-      console.log("Error");
-    });
   res.end();
 });
 //#endregion
 
 //#region users
 app.use("/register", userRoutes);
+app.use('/login' , loginRoutes)
 //#endregion
 
 //#endregion
