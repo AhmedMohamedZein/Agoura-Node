@@ -1,7 +1,9 @@
+const { JsonWebTokenError } = require("jsonwebtoken");
 const userModel = require("../Models/User");
 const userValidation = require("../Utils/userValidation");
 const validate = require("../Utils/userValidation");
 const loginValidation = require("./Utils/loginValidation");
+
 
 class AuthController {
   async register(req, res) {
@@ -53,15 +55,25 @@ class AuthController {
 
   // check user email in db
   checkEmail() {
-    return userModel.findOne({ email: req.body.email }).exec();
+    foundedUser=userModel.findOne({ email: req.body.email }).exec();
+    if(foundedUser){
+      return foundedUser;
+    }else{
+      res.status(400).send("Invalid Email or Password")
+    }
   }
 
   //check password
   checkPassword(foundedUser) {
-    if (req.body.password === foundedUser.password) {
-      return true;
+    checkPassword=bcrypt.compare(req.body.password, foundedUser.password);
+    if(checkPassword){
+      return checkPassword
+    }else{
+      res.status(400).send("Invalid Email or Password")
     }
   }
+
+
 
   // async function getUserByEmail(email) {
   //   const user = await User.findOne({ email });
