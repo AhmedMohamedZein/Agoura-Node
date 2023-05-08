@@ -7,7 +7,7 @@ const cors = require("cors");
 const path = require("path");
 const User = require("./Models/User");
 dotenv.config();
-userRoutes = require("./Routes/users");
+userRoutes = require("./Routes/register");
 
 //#endregion
 
@@ -45,7 +45,7 @@ app.get("/", (req, res) => {
 //#endregion
 
 //#region users
-app.use("/users", userRoutes);
+app.use("/register", userRoutes);
 //#endregion
 
 //#endregion
