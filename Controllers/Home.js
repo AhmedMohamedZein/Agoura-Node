@@ -20,11 +20,22 @@ const getData = async function(req , res){
 
 const deleteNotification = async function(req , res){
     const notificationId = req.params.id
-    const userEmail = 'ahmedzain@gmail.com'
-    const userData = await user.findOne({email: userEmail})
     const notifications = await notification.updateOne({_id:notificationId} , {deleted: true})
     console.log(notifications)
 }
 
+const deleteItemFromCart = async function(req, res) {
+    const userEmail = 'ahmedzain@gmail.com'; // res.auth to get logged in user
+    const userData = await user.findOne({ email: userEmail })
+  
+    const itemId = req.params.id;
+    const item = await cart.findOneAndUpdate(
+        { user: userData._id },
+        { $pull: { apartments: itemId } }
+      )
+  
+    console.log(item);
+  };
 
-module.exports = {getData , deleteNotification}
+
+module.exports = {getData , deleteNotification , deleteItemFromCart}
