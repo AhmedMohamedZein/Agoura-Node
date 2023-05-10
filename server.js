@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
+const NotificationScheduler = require('./Utils/NotificationScheduler')
 
 dotenv.config();
 const userRoutes = require("./Routes/register");
@@ -43,6 +44,13 @@ mongoose.connect(process.env.DATABASE);
 mongoose.connection.on("connected", () => {
   console.log("Connected to the database");
 });
+//#endregion
+
+//#region TaskScheduling
+
+const notificationScheduler = new NotificationScheduler('0 0 * * *');
+notificationScheduler.start();
+
 //#endregion
 
 app.listen(PORT, () => {
