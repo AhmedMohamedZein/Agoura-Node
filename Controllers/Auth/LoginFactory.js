@@ -10,7 +10,7 @@ module.exports = class LoginFactory {
         switch (loginObject) {
             case 'google' : return google;
             case 'facebook' : return facebook;
-            case 'system' : return system;
+            case 'login' : return system;
 
             default : throw new Error ('Error happend in the loginFactory !!');
         }

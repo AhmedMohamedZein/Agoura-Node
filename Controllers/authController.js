@@ -3,6 +3,7 @@ const validate = require("../Utils/userValidation");
 const LoginStrategy = require('./Auth/LoginStrategy');
 const LoginFactory = require('./Auth/LoginFactory');
 
+
 class AuthController {
   async register(req, res) {
     let name = req.body.name;
@@ -62,6 +63,7 @@ class AuthController {
       return res.status(loginResult.status).json( loginResult ); // Error message
     }
   }
+
 }
 
 module.exports = new AuthController();
