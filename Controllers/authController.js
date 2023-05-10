@@ -48,14 +48,19 @@ class AuthController {
       });
   }
 
-  login(req, res){
+  login = async (req, res)=> {
 
     const logMeIn = LoginFactory.createLoginObject(req.path); // googleObject.login
     const loginStrategy = new LoginStrategy (logMeIn);
-    loginStrategy.execute(req.body); //login
-    return res.json({
-      success: true
-    });
+    const loginResult = await loginStrategy.execute(req.body); //login
+    
+    if ( loginResult.hasOwnProperty('myToken') ){
+      res.header("x-auth-token", loginResult.myToken);
+      return res.status(200).send("you are logged in");
+    } 
+    else {
+      return res.status(loginResult.status).json( loginResult ); // Error message
+    }
   }
 }
 

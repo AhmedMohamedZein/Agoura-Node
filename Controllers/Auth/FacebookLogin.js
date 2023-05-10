@@ -5,11 +5,13 @@ const iLogin = require('./iLogin');
 class FacebookLogin extends iLogin {
 
 
-    login(reqBody = null) {
+    login = async (reqBody = null) => {
 
         // Facebook Login Functionality
-        console.log("Facebook says Hello");
-
+        return {
+            message : "Facebook says Hello",
+            status : 200
+        };
     }
 
 }

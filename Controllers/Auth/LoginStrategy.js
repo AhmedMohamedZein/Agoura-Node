@@ -12,8 +12,8 @@ module.exports = class LoginStrategy {
         }
     }
 
-    execute (reqBody = null) {
-       return this.login(reqBody); // return the User Object from the login 
+    async execute (reqBody = null) {
+       return await this.login(reqBody); // return the User Object from the login 
     }
 
 }

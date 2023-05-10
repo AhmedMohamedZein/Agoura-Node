@@ -5,10 +5,13 @@ const iLogin = require('./iLogin');
 class GoogleLogin extends iLogin {
 
 
-    login(reqBody = null){
+    login = async (reqBody = null) =>{
 
         // Google Login Functionality
-        console.log("Google says Hello");
+        return {
+            message : "Google says Hello",
+            status : 200
+        };
 
     }
 
