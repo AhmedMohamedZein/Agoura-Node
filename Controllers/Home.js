@@ -9,8 +9,8 @@ class HomeController {
     try{
         const userEmail = 'ahmedzain@gmail.com' // res.auth to get  logged in user
         const userData = await user.findOne({email: userEmail})
-        const carts = await cart.find({user:userData._id }).populate('apartments')
         const notifications = await notification.find({user:userData._id , deleted:false})
+        const carts = await cart.find({user:userData._id }).populate('apartments')
         const apartments = await apartment.find({})
         const homeData = {carts , notifications , apartments}
         await res.status(200).json(homeData)
@@ -23,7 +23,11 @@ class HomeController {
   async deleteNotification(req , res){
     try{
         const notificationId = req.params.id
-        const notifications = await notification.updateOne({_id:notificationId} , {deleted: true})
+        let notifications = await notification.updateOne({_id:notificationId} , {deleted: true} , {new:true})
+        const userEmail = 'ahmedzain@gmail.com' // res.auth to get  logged in user
+        const userData = await user.findOne({email: userEmail})
+        notifications = await notification.find({user:userData._id , deleted:false})
+        console.log(notifications)
         await res.status(200).json(notifications)
     }catch(error){
         console.error(error);
