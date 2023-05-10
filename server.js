@@ -2,16 +2,17 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
-const mongoose = require('mongoose');
-const cors = require('cors');
+const mongoose = require("mongoose");
+const cors = require("cors");
 const path = require('path');
 const NotificationScheduler = require('./Utils/NotificationScheduler')
-
-dotenv.config();
 const userRoutes = require("./Routes/register");
-const loginRoutes = require('./Routes/auth');
+const loginRoutes = require('./Routes/login');
 const HomeRoute = require(path.join(__dirname , './Routes/Home'));
+dotenv.config();
+
 //#endregion
+
 
 //#region config
 const PORT = process.env.PORT || 3000;
@@ -34,7 +35,7 @@ app.get("/", (req, res) => {
 
 //#region 
 app.use("/register", userRoutes);
-app.use('/login' , loginRoutes);
+app.use('/auth' , loginRoutes);
 app.use('/home' , HomeRoute);
 //#endregion
 
