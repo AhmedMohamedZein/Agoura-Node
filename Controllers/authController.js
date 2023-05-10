@@ -45,6 +45,7 @@ class AuthController {
         message: "validation error",
       });
   }
+  
 }
 
 module.exports = new AuthController();
