@@ -47,7 +47,7 @@ class AuthController {
     var userPassword = req.body.password;
 
     //check data validation
-    var validateInputs = loginValidation(req.body);
+       var validateInputs = loginValidation(req.body);
        if (!validateInputs) {
 
            //if data not valid
@@ -56,8 +56,8 @@ class AuthController {
           }  
 
          //check email
-           let foundedUser = await this.checkEmail(useremail);
-       if (!foundedUser) {
+          let foundedUser = await this.checkEmail(useremail);
+          if (!foundedUser) {
 
           //if user doesnot exist
           res.status(400).send("Invalid Email or Password");
@@ -66,7 +66,7 @@ class AuthController {
 
          //check password
          var checkPassword = await this.checkPassword(foundedUser.password,userPassword)
-        if (!checkPassword) {
+         if (!checkPassword) {
 
          //if password not match
          res.status(400).send("Invalid  Password");
@@ -83,12 +83,9 @@ class AuthController {
        
 
 
-
-
   // check user email in db
-  async checkUser(useremail,hashedPassword) {
-
-    return await userModel.findOne({ email: useremail,hashedPassword })
+  async checkEmail(useremail) {
+    return await userModel.findOne({ email: useremail })
       .then((foundedUser) => {
         if (foundedUser) {
           // Document found
@@ -103,24 +100,15 @@ class AuthController {
 
 
   //check password
-  checkPassword(password) {
-    // Generate a salt for the hash
-bcrypt.genSalt(10, (err, salt) => {
-  if (err) {
-    console.error(err);
-    return;
-  }
-
-  // Hash the password with the salt
-  bcrypt.hash(password, salt, (err, hash) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
-
-    console.log(hash); // Prints the hashed password
-  });
-});
+  checkPassword(foundedUserPassword, userPassword) {
+    return bcrypt
+      .compare(userPassword, foundedUserPassword)
+      .then((checkPassword) => {
+       return checkPassword;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
 
