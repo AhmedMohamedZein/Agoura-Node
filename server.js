@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 dotenv.config();
 userRoutes = require("./Routes/register");
-loginRoutes = require('./Routes/auth');
+loginRoutes = require('./Routes/login');
 
 //#endregion
 
