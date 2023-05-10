@@ -33,7 +33,7 @@ app.get("/", (req, res) => {
 
 //#region 
 app.use("/register", userRoutes);
-app.use('/login' , loginRoutes);
+app.use('/auth' , loginRoutes);
 app.use('/home' , HomeRoute);
 //#endregion
 
