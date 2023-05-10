@@ -2,16 +2,15 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
-const mongoose = require('mongoose');
-const cors = require('cors');
+const mongoose = require("mongoose");
+const cors = require("cors");
 const path = require('path');
-
-dotenv.config();
+const NotificationScheduler = require('./Utils/NotificationScheduler')
 const userRoutes = require("./Routes/register");
-const loginRoutes = require('./Routes/auth');
+const loginRoutes = require('./Routes/login');
 const HomeRoute = require(path.join(__dirname , './Routes/Home'));
-const authProvidersRoutes=require("./Routes/authProvidersRoutes")
 //#endregion
+
 
 //#region config
 const PORT = process.env.PORT || 3000;
@@ -35,7 +34,6 @@ app.get("/", (req, res) => {
 //#region 
 app.use("/register", userRoutes);
 app.use('/login' , loginRoutes);
-app.use('/auth' , authProvidersRoutes);
 app.use('/home' , HomeRoute);
 //#endregion
 
@@ -45,6 +43,13 @@ mongoose.connect(process.env.DATABASE);
 mongoose.connection.on("connected", () => {
   console.log("Connected to the database");
 });
+//#endregion
+
+//#region TaskScheduling
+
+const notificationScheduler = new NotificationScheduler('0 0 * * *');
+notificationScheduler.start();
+
 //#endregion
 
 app.listen(PORT, () => {

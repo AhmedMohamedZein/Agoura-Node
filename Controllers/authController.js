@@ -1,6 +1,8 @@
 const userModel = require("../Models/User");
 const validate = require("../Utils/userValidation");
 
+
+
 class AuthController {
   async register(req, res) {
     let name = req.body.name;
@@ -45,7 +47,7 @@ class AuthController {
         message: "validation error",
       });
   }
-  
+
 }
 
 module.exports = new AuthController();
