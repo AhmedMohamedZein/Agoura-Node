@@ -10,6 +10,7 @@ dotenv.config();
 const userRoutes = require("./Routes/register");
 const loginRoutes = require('./Routes/auth');
 const HomeRoute = require(path.join(__dirname , './Routes/Home'));
+const authProvidersRoutes=require("./Routes/authProvidersRoutes")
 //#endregion
 
 //#region config
@@ -34,6 +35,7 @@ app.get("/", (req, res) => {
 //#region 
 app.use("/register", userRoutes);
 app.use('/login' , loginRoutes);
+app.use('/auth' , authProvidersRoutes);
 app.use('/home' , HomeRoute);
 //#endregion
 
