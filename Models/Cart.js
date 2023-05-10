@@ -11,14 +11,14 @@ CartSchema.statics.findOneAndDeleteByItem = function(userID , itemID){
         { user: userID },
         { $pull: { apartments: itemID } },
         {new: true}
-      )
+      ).populate('apartments')
 }
 CartSchema.statics.findOneAndUpdateByItem = function(userID , itemID){
     return this.findOneAndUpdate(
         { user: userID._id }, 
         { $addToSet: { apartments: itemID } },
         { upsert: true, new: true }
-      )
+      ).populate('apartments')
 }
 
   
