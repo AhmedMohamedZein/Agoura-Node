@@ -1,5 +1,7 @@
 const userModel = require("../Models/User");
 const validate = require("../Utils/userValidation");
+const LoginStrategy = require('./Auth/LoginStrategy');
+const LoginFactory = require('./Auth/LoginFactory');
 
 class AuthController {
   async register(req, res) {
@@ -44,6 +46,16 @@ class AuthController {
         success: false,
         message: "validation error",
       });
+  }
+
+  newLogin(req, res){
+
+    const logMeIn = LoginFactory.createLoginObject(req.path);
+    const loginStrategy = new LoginStrategy (logMeIn);
+    loginStrategy.execute(); //login
+    return res.json({
+      success: true
+    });
   }
 }
 
