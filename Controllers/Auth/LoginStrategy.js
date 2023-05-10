@@ -12,8 +12,8 @@ module.exports = class LoginStrategy {
         }
     }
 
-    execute () {
-       return this.login(); // return the User Object from the login 
+    execute (reqBody = null) {
+       return this.login(reqBody); // return the User Object from the login 
     }
 
 }

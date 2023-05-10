@@ -48,11 +48,11 @@ class AuthController {
       });
   }
 
-  newLogin(req, res){
+  login(req, res){
 
-    const logMeIn = LoginFactory.createLoginObject(req.path);
+    const logMeIn = LoginFactory.createLoginObject(req.path); // googleObject.login
     const loginStrategy = new LoginStrategy (logMeIn);
-    loginStrategy.execute(); //login
+    loginStrategy.execute(req.body); //login
     return res.json({
       success: true
     });

@@ -1,14 +1,16 @@
 const google = require('./GoogleLogin');
 const facebook = require('./FacebookLogin');
+const system = require('./SystemLogin');
 
 module.exports = class LoginFactory {
 
-    static createLoginObject (path) {
+    static createLoginObject (path) { // 
         const loginObject = LoginFactory._getRoute(path); // google, facebook ... etc
 
         switch (loginObject) {
             case 'google' : return google;
             case 'facebook' : return facebook;
+            case 'system' : return system;
 
             default : throw new Error ('Error happend in the loginFactory !!');
         }

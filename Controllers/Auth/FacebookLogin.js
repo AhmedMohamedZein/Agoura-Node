@@ -5,10 +5,10 @@ const iLogin = require('./iLogin');
 class FacebookLogin extends iLogin {
 
 
-    login() {
+    login(reqBody = null) {
 
         // Facebook Login Functionality
-       
+        console.log("Facebook says Hello");
 
     }
 

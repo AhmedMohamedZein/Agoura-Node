@@ -5,7 +5,7 @@ const iLogin = require('./iLogin');
 class GoogleLogin extends iLogin {
 
 
-    login(){
+    login(reqBody = null){
 
         // Google Login Functionality
         console.log("Google says Hello");
