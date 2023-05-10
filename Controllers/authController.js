@@ -40,74 +40,80 @@ class AuthController {
       });
   }
 
-
   login = async (req, res) => {
     var useremail = req.body.email;
     var userPassword = req.body.password;
 
     //check data validation
     var validateInputs = loginValidation(req.body);
-    if (validateInputs) {
+       if (!validateInputs) {
+           //if data not valid
+            res.status(400).send("Data Not Valid");
+    } else {
+             //check email
+             let foundedUser = await this.checkEmail(useremail);
+       if (!foundedUser) {
 
-      //check email
-      var foundedUser = await this.checkEmail(useremail);
-      console.log(foundedUser)
-      if (!foundedUser) {
-        //if user doesnot exist
-        res.status(400).send("Invalid Email or Password");
-      }else{
-      //check password
-      var checkPassword = await this.checkPassword(foundedUser.password,userPassword);
-      if (!checkPassword) 
-      {
-        //if password not match
-        console.log("Passwords do not match");
-        res.status(400).send("Invalid  Password");
-      }else{
-        //send token
-        var token = this.sendToken();
-        res.header("x-auth-token", token);
-        res.status(200).send("you are logged in");
-      } 
-    }
-  } else {//if data not valid
-    res.status(400).send("Data Not Valid");
-  }
+             //if user doesnot exist
+              res.status(400).send("Invalid Email or Password");
+       } else {
+
+               //check password
+                var checkPassword = await this.checkPassword(foundedUser.password,userPassword)
+        if (!checkPassword) {
+
+                //if password not match
+                res.status(400).send("Invalid  Password");
+        } else {
+
+                   //send token
+                    var token = this.sendToken(useremail);
+                    res.header("x-auth-token", token);
+                    res.status(200).send("you are logged in");
+                    // req.session.token = token;
+                }
+              }
+       } 
   }
 
- 
+
+
 
   // check user email in db
-  checkEmail(useremail) {
-    var foundedUser = userModel.findOne({ email: useremail }).exec();
-    if (foundedUser.email) {
-      console.log(foundedUser);
-      return foundedUser;
-    }
+  async checkEmail(useremail) {
+    return await userModel.findOne({ email: useremail })
+      .then((foundedUser) => {
+        if (foundedUser) {
+          // Document found
+          return foundedUser;
+        }
+      })
+       .catch((error) => {
+        console.error(error);
+      });
   }
-  
+
+
 
   //check password
   checkPassword(foundedUserPassword, userPassword) {
-    bcrypt
+    return bcrypt
       .compare(userPassword, foundedUserPassword)
       .then((checkPassword) => {
-        if (checkPassword) {
-          console.log(checkPassword);
-          return checkPassword;
-        }
+       return checkPassword;
       })
       .catch((error) => {
         console.error(error);
       });
   }
 
+
+
   //send tokin to user
-  sendToken() {
-    const payload = req.body.email;
-    const secret = "my-secret-key";
-    const token = jwt.sign(payload, secret);
-    return token;
+  sendToken(email) {
+       const secret = "my-secret-key";
+       const token = jwt.sign(email, secret);
+       return token;
   }
 }
 module.exports = new AuthController();
