@@ -9,8 +9,6 @@ const NotificationScheduler = require('./Utils/NotificationScheduler')
 const userRoutes = require("./Routes/register");
 const loginRoutes = require('./Routes/login');
 const HomeRoute = require(path.join(__dirname , './Routes/Home'));
-dotenv.config();
-
 //#endregion
 
 
