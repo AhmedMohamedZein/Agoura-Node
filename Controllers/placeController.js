@@ -7,7 +7,10 @@ class PlaceController {
 
     let appartment = await appartmentModel.findOne({ itemId }).populate({
       path: "bids",
-      options: { sort: { date: -1 }, select: { _id: 1, date: 1 } },
+      options: {
+        sort: { date: -1 },
+        select: { _id: 1, date: 1, amountMoney: 1 },
+      },
       populate: {
         path: "user",
         options: { select: "_id" },
@@ -27,6 +30,8 @@ class PlaceController {
       data: {
         title: appartment.title,
         description: appartment.description,
+        image: appartment.images[0],
+        itemNumber: appartment.itemId,
         currentBid: currentBid.bids[0].amountMoney,
         numberOfBids: appartment.bids.length,
         numberOfBidders: numberOfBidders.length,
