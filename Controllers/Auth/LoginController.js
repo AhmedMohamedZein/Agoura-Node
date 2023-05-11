@@ -2,6 +2,7 @@
 // A class that extends "Implements" an (Interface) that's realy a class
 const LoginStrategy = require('./LoginStrategy');
 const LoginFactory = require('./LoginFactory');
+
 class Login {
 
 
@@ -15,7 +16,7 @@ class Login {
             res.set("Access-Control-Expose-Headers", "X-Auth-Token");
             res.set("Access-Control-Allow-Headers", "X-Auth-Token");
             res.header("X-Auth-Token",loginResult.myToken);
-            console.log(loginResult.myToken)
+            res.cookie('X-Auth-Token',loginResult.myToken, { maxAge:3600*24*30, httpOnly: false });
             return res.status(loginResult.status).json(loginResult);
         } 
         else {

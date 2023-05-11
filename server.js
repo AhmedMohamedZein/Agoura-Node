@@ -10,6 +10,8 @@ const userRoutes = require("./Routes/register");
 const loginRoutes = require("./Routes/login");
 const HomeRoute = require(path.join(__dirname, "./Routes/Home"));
 const placeRoutes = require(path.join(__dirname, "./Routes/place"));
+const cookieParser = require('cookie-parser');
+
 //#endregion
 
 //#region config
@@ -20,6 +22,7 @@ const app = express();
 //#region Middlewares
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(cors());
 //#endregion
 
