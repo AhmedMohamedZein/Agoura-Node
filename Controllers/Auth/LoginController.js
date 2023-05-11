@@ -16,9 +16,7 @@ class Login {
             res.set("Access-Control-Expose-Headers", "X-Auth-Token");
             res.set("Access-Control-Allow-Headers", "X-Auth-Token");
             res.header("X-Auth-Token",loginResult.myToken);
-            res.cookie('X-Auth-Token',loginResult.myToken, { maxAge:3600*24*30, httpOnly: true });
-            console.log(req.cookies)
-            
+            res.cookie('X-Auth-Token',loginResult.myToken, { maxAge:3600*24*30, httpOnly: false });
             return res.status(loginResult.status).json(loginResult);
         } 
         else {
