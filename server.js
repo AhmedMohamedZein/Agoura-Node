@@ -4,13 +4,13 @@ const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const path = require('path');
-const NotificationScheduler = require('./Utils/NotificationScheduler')
+const path = require("path");
+const NotificationScheduler = require("./Utils/NotificationScheduler");
 const userRoutes = require("./Routes/register");
-const loginRoutes = require('./Routes/login');
-const HomeRoute = require(path.join(__dirname , './Routes/Home'));
+const loginRoutes = require("./Routes/login");
+const HomeRoute = require(path.join(__dirname, "./Routes/Home"));
+const placeRoutes = require(path.join(__dirname, "./Routes/place"));
 //#endregion
-
 
 //#region config
 const PORT = process.env.PORT || 3000;
@@ -23,7 +23,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 //#endregion
 
-
 //#region Root
 app.get("/", (req, res) => {
   console.log("Agoura backend!");
@@ -31,12 +30,12 @@ app.get("/", (req, res) => {
 });
 //#endregion
 
-//#region 
+//#region
 app.use("/register", userRoutes);
-app.use('/auth' , loginRoutes);
-app.use('/home' , HomeRoute);
+app.use("/auth", loginRoutes);
+app.use("/home", HomeRoute);
+app.use("/place", placeRoutes);
 //#endregion
-
 
 //#region Database Connetion
 mongoose.connect(process.env.DATABASE);
@@ -47,7 +46,7 @@ mongoose.connection.on("connected", () => {
 
 //#region TaskScheduling
 
-const notificationScheduler = new NotificationScheduler('0 0 * * *');
+const notificationScheduler = new NotificationScheduler("0 0 * * *");
 notificationScheduler.start();
 
 //#endregion
