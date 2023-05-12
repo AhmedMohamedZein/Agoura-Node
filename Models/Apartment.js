@@ -1,3 +1,4 @@
+const { timeStamp } = require("console");
 const mongoose = require("mongoose");
 
 const apartmentSchema = new mongoose.Schema({
@@ -17,6 +18,9 @@ const apartmentSchema = new mongoose.Schema({
   owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   bids: [{ type: mongoose.Schema.Types.ObjectId, ref: "Bid" }],
   agreeToTerms: { type: Boolean, required: true },
-});
+  timeLeft: { type: Date, required: true },
+  duration: { type: Number, required: true },
+},
+{ timestamps: true });
 
 module.exports = mongoose.model("Apartment", apartmentSchema);
