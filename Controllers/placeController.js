@@ -41,6 +41,20 @@ class PlaceController {
       },
     });
   }
+  async placeDetails(req, res, next) {
+    let itemId = req.params.id;
+
+    let appartment = await appartmentModel
+      .findOne({ itemId })
+      .populate({ path: "bids", options: { sort: { amountMoney: -1 },limit:1 } })
+      
+    return res.status(200).json({
+      message: "success",
+      data: {
+        appartment
+      },
+    });
+  }
 }
 
 module.exports = new PlaceController();
