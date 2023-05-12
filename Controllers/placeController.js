@@ -1,5 +1,6 @@
 const bidModel = require("../Models/Bid");
 const appartmentModel = require("../Models/Apartment");
+const { error } = require("console");
 
 class PlaceController {
   async history(req, res, next) {
@@ -42,18 +43,29 @@ class PlaceController {
     });
   }
   async placeDetails(req, res, next) {
-    let itemId = req.params.id;
-
-    let appartment = await appartmentModel
+    try{
+      let itemId = req.params.id;
+      let appartment = await appartmentModel
       .findOne({ itemId })
       .populate({ path: "bids", options: { sort: { amountMoney: -1 },limit:1 } })
-      
-    return res.status(200).json({
-      message: "success",
-      data: {
-        appartment
-      },
-    });
+      console.log(appartment)
+      if(!appartment){
+        throw new Error("appartment not found")
+      }
+      return res.status(200).json({
+        success:true,
+        message: "success",
+        data: {
+          appartment
+        },
+      });
+    }catch(err){
+      return res.status(400).json({
+        success:false,
+        message: err.message,
+      });
+    }
+
   }
 }
 
