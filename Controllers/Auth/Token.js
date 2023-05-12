@@ -14,6 +14,11 @@ module.exports = class Token {
     }
 
     static verifyToken(token) {
-        // verifyToken
+        const secret = process.env.TOKEN_SECRET;
+        let user=jwt.verify(token, secret);
+        return user;
+
     }
+    
+    
 }
