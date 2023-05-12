@@ -50,7 +50,10 @@ class PlaceController {
       .populate({ path: "bids", options: { sort: { amountMoney: -1 },limit:1 } })
       console.log(appartment)
       if(!appartment){
-        throw new Error("appartment not found")
+        return res.status(404).json({
+          success:false,
+          message: "resource not found",
+        });
       }
       return res.status(200).json({
         success:true,
@@ -60,7 +63,7 @@ class PlaceController {
         },
       });
     }catch(err){
-      return res.status(400).json({
+      return res.status(500).json({
         success:false,
         message: err.message,
       });
