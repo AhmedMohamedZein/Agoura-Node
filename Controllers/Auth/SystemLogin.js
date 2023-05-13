@@ -43,7 +43,7 @@ class SystemLogin extends iLogin {
         }
             
         //create Token
-        var token = Token.createToken(useremail);
+        var token = Token.createToken({'email': useremail});
         return {
             myToken : token,
             success : true ,

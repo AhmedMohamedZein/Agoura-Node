@@ -3,17 +3,25 @@ const user = require(path.join(__dirname , '../Models/User'))
 const apartment = require(path.join(__dirname , '../Models/Apartment'))
 const cart = require(path.join(__dirname , '../Models/Cart'))
 const notification = require(path.join(__dirname , '../Models/Notification'))
+const auth = require(path.join(__dirname , '../Controllers/Auth/Token'))
 
 class HomeController {
   async getData(req , res){
     try{
-        const userEmail = 'ahmedzain@gmail.com' // res.auth to get  logged in user
-        const userData = await user.findOne({email: userEmail})
-        const notifications = await notification.find({user:userData._id , deleted:false})
-        const carts = await cart.find({user:userData._id }).populate('apartments')
-        const apartments = await apartment.find({})
-        const homeData = {carts , notifications , apartments}
-        await res.status(200).json(homeData)
+        const token = req.headers['authorization']
+        if(token != 'null'){
+          const userInfo = auth.verifyToken(token)
+          const userData = await user.findOne({email: userInfo.email})
+          const notifications = await notification.find({user:userData._id , deleted:false})
+          const carts = await cart.find({user:userData._id }).populate('apartments')
+          const apartments = await apartment.find({})
+          const homeData = {carts , notifications , apartments , userData}
+          await res.status(200).json(homeData)
+          
+        }else{
+          await res.status(401).json({'message' : "not authorized"})
+        }
+        
     }catch(error){
         console.error(error);
         res.status(500).json({ message: 'Something went wrong' });
@@ -22,13 +30,18 @@ class HomeController {
 
   async deleteNotification(req , res){
     try{
-        const notificationId = req.params.id
-        let notifications = await notification.updateOne({_id:notificationId} , {deleted: true} , {new:true})
-        const userEmail = 'ahmedzain@gmail.com' // res.auth to get  logged in user
-        const userData = await user.findOne({email: userEmail})
-        notifications = await notification.find({user:userData._id , deleted:false})
-        console.log(notifications)
-        await res.status(200).json(notifications)
+        const token = req.headers['authorization']
+        if(token != 'null'){
+          const notificationId = req.params.id
+          let notifications = await notification.updateOne({_id:notificationId} , {deleted: true} , {new:true})
+          const userInfo = auth.verifyToken(token)
+          const userData = await user.findOne({email: userInfo.email})
+          notifications = await notification.find({user:userData._id , deleted:false})
+          await res.status(200).json(notifications)
+
+        }else{
+          await res.status(401).json({'message' : "not authorized"})
+        }
     }catch(error){
         console.error(error);
         res.status(500).json({ message: 'Something went wrong' });
@@ -36,12 +49,21 @@ class HomeController {
   }
 
   async deleteItemFromCart(req, res) {
+    
     try{
-        const userEmail = 'ahmedzain@gmail.com'; // res.auth to get logged in user
-        const userData = await user.findOne({ email: userEmail })
-        const itemId = req.params.id;
-        const item = await cart.findOneAndDeleteByItem(userData._id , itemId )
-        await res.status(200).json(item)
+
+        const token = req.headers['authorization']
+        if(token != 'null'){
+
+          const userInfo = auth.verifyToken(token)
+          const userData = await user.findOne({email: userInfo.email})
+          const itemId = req.params.id;
+          const item = await cart.findOneAndDeleteByItem(userData._id , itemId )
+          await res.status(200).json(item)
+
+        }else{
+          await res.status(401).json({'message' : "not authorized"})
+        }
     }catch(error){
         console.error(error);
         res.status(500).json({ message: 'Something went wrong' });
@@ -50,11 +72,20 @@ class HomeController {
 
   async addToCart(req , res){
     try{
-        const userEmail = 'ahmedzain@gmail.com'; // res.auth to get logged in user
-        const userData = await user.findOne({ email: userEmail })
-        const itemId = req.body.id
-        const carts = await cart.findOneAndUpdateByItem(userData._id , itemId)
-        await res.status(200).json(carts)
+
+        const token = req.headers['authorization']
+        if(token != 'null'){
+
+          const userInfo = auth.verifyToken(token)
+          const userData = await user.findOne({email: userInfo.email})
+          const itemId = req.body.id
+          const carts = await cart.findOneAndUpdateByItem(userData._id , itemId)
+          await res.status(200).json(carts)
+
+        }else{
+          await res.status(401).json({'message' : "not authorized"})
+        }
+
     }catch(error){
         console.error(error);
         res.status(500).json({ message: 'Something went wrong' });
