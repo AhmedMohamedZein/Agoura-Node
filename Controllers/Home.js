@@ -9,17 +9,18 @@ class HomeController {
   async getData(req , res){
     try{
         const token = req.headers['authorization']
+        const apartments = await apartment.find({})
         if(token != 'null'){
           const userInfo = auth.verifyToken(token)
           const userData = await user.findOne({email: userInfo.email})
           const notifications = await notification.find({user:userData._id , deleted:false})
           const carts = await cart.find({user:userData._id }).populate('apartments')
-          const apartments = await apartment.find({})
           const homeData = {carts , notifications , apartments , userData}
           await res.status(200).json(homeData)
           
         }else{
-          await res.status(401).json({'message' : "not authorized"})
+          const homeData = {apartments , 'carts':[] ,'notifications':[], 'userData':null }
+          await res.status(200).json(homeData)
         }
         
     }catch(error){
