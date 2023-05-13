@@ -2,6 +2,7 @@ const appartmentModel = require("../Models/Apartment");
 const createPlaceValidation = require('../Utils/createPlaceValidation');
 const { v4: uuidv4 } = require('uuid');
 const Token = require('./Auth/Token');
+const User = require('../Models/User');
 
 class PlaceController {
   async history(req, res, next) {
@@ -57,44 +58,56 @@ class PlaceController {
         message : errors
       });
     }
-
-    const uniqueId = uuidv4(); // for the itemId attribute
     const token = req.headers.authorization
-
-    if ( !token ){
+    const user = Token.verifyToken(token);
+    if ( !token && !user ){ // token is not empty and valid
       res.status(401).json({
         success : false ,
         message : "Unauthorized"
       });
     }
 
-    const user = Token.verifyToken();
-    
+    const apartmentOwner = await User.findOne({ email: user.email });
+    const uniqueId = uuidv4(); // for the itemId attribute
     const newApartment = new appartmentModel({
-      title: req.title,
+      title: req.body.title,
       itemId: uniqueId,
-      description: req.description,
+      description: req.body.description,
       address: {
-        country: req.address.country,
-        city: req.address.city,
-        street: req.address.street,
-        zipCode: req.address.zipCode,
+        country: req.body.address.country,
+        city: req.body.address.city,
+        street: req.body.address.street,
+        zipCode: req.body.address.zipCode,
       },
       features: {
-        bedRooms: int(req.address.bedRooms),
-        baths: int(req.address.baths),
-        area: int(req.address.area),
-        kitchen: int(req.address.kitchen),
-        guests: int(req.address.guests),
+        bedRooms: parseInt(req.body.features.bedRooms),
+        baths: parseInt(req.body.features.baths),
+        area: parseInt(req.body.features.area),
+        kitchen: parseInt(req.body.features.kitchen),
+        guests: parseInt(req.body.features.guests),
       },
-      price: int(req.price),
-      images: req.images,
-      owner: "User ID",
+      price: Number(req.body.startBid),
+      images: req.body.images,
+      owner: apartmentOwner._id,
       bids: [],
-      agreeToTerms: req.agreeToTerms,
+      agreeToTerms: req.body.agreeToTerms,
     });
 
-    res.end();
+    try {
+      apartmentOwner.ownedApartments.push(newApartment._id);
+      await newApartment.save();
+      res.status(201).json({
+        success: true,
+        message: "Apartment created successfully"
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        success: false,
+        message: "Server error"
+      });
+    }
+
   }
 }
 
