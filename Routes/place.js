@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const multer=require("multer");
 const placeConroller = require("../Controllers/placeController");
-const setupRequest = require('../Middlewares/createPlace/setupRequest');
-const uploadImage = require('../Middlewares/createPlace/uploadImage');
+const setupRequest = require('../Middlewares/createPlaceMiddleware/setupRequest');
+const uploadImage = require('../Middlewares/createPlaceMiddleware/uploadImage');
 const upload = multer();
 
 
