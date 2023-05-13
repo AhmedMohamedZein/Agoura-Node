@@ -30,7 +30,7 @@ class PlaceController {
       message: "success",
       data: {
         title: appartment.title,
-        description: appartment.description,
+        aboutPlace: appartment.aboutPlace,
         image: appartment.images[0],
         itemNumber: appartment.itemId,
         currentBid: currentBid.bids[0].amountMoney,
