@@ -1,5 +1,7 @@
-const bidModel = require("../Models/Bid");
 const appartmentModel = require("../Models/Apartment");
+const createPlaceValidation = require('../Utils/createPlaceValidation');
+const { v4: uuidv4 } = require('uuid');
+const Token = require('./Auth/Token');
 
 class PlaceController {
   async history(req, res, next) {
@@ -40,6 +42,59 @@ class PlaceController {
         historyOfBids: appartment.bids,
       },
     });
+  }
+
+  async create(req, res) {
+    
+    // Images in req.body.images
+    // ALL THE OTHER Data in req.body.<Everything>
+
+    const isValid = createPlaceValidation(req.body);
+    if ( !isValid ){
+      const errors = createPlaceValidation.errors;
+      res.status(400).json({
+        success : false ,
+        message : errors
+      });
+    }
+
+    const uniqueId = uuidv4(); // for the itemId attribute
+    const token = req.headers.authorization
+
+    if ( !token ){
+      res.status(401).json({
+        success : false ,
+        message : "Unauthorized"
+      });
+    }
+
+    const user = Token.verifyToken();
+    
+    const newApartment = new appartmentModel({
+      title: req.title,
+      itemId: uniqueId,
+      description: req.description,
+      address: {
+        country: req.address.country,
+        city: req.address.city,
+        street: req.address.street,
+        zipCode: req.address.zipCode,
+      },
+      features: {
+        bedRooms: int(req.address.bedRooms),
+        baths: int(req.address.baths),
+        area: int(req.address.area),
+        kitchen: int(req.address.kitchen),
+        guests: int(req.address.guests),
+      },
+      price: int(req.price),
+      images: req.images,
+      owner: "User ID",
+      bids: [],
+      agreeToTerms: req.agreeToTerms,
+    });
+
+    res.end();
   }
 }
 
