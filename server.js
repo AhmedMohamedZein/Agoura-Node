@@ -12,12 +12,13 @@ const HomeRoute = require(path.join(__dirname, "./Routes/Home"));
 const placeRoutes = require(path.join(__dirname, "./Routes/place"));
 const bidRoutes = require(path.join(__dirname, "./Routes/bid"));
 const ProfileRoutes = require(path.join(__dirname , './Routes/Profile'))
-
 const cookieParser = require('cookie-parser');
+
 
 //#endregion
 
 //#region config
+dotenv.config();
 const PORT = process.env.PORT || 3000;
 const app = express();
 //#endregion
