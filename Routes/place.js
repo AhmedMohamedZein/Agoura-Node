@@ -12,4 +12,7 @@ router.get("/:id/history", placeConroller.history);
 router.post('/create' , upload.array('photo') , setupRequest, uploadImage , placeConroller.create );
 
 
+router.get("/:id", placeConroller.placeDetails);
+
+
 module.exports = router;

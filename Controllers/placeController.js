@@ -1,8 +1,11 @@
+
 const appartmentModel = require("../Models/Apartment");
 const createPlaceValidation = require('../Utils/createPlaceValidation');
 const { v4: uuidv4 } = require('uuid');
 const Token = require('./Auth/Token');
 const User = require('../Models/User');
+const { error } = require("console");
+
 
 class PlaceController {
   async history(req, res, next) {
@@ -32,7 +35,7 @@ class PlaceController {
       message: "success",
       data: {
         title: appartment.title,
-        description: appartment.description,
+        aboutPlace: appartment.aboutPlace,
         image: appartment.images[0],
         itemNumber: appartment.itemId,
         currentBid: currentBid.bids[0].amountMoney,
@@ -44,6 +47,7 @@ class PlaceController {
       },
     });
   }
+
 
   async create(req, res) {
     
@@ -72,7 +76,7 @@ class PlaceController {
     const newApartment = new appartmentModel({
       title: req.body.title,
       itemId: uniqueId,
-      description: req.body.description,
+      aboutPlace: req.body.aboutPlace,
       address: {
         country: req.body.address.country,
         city: req.body.address.city,
@@ -105,6 +109,34 @@ class PlaceController {
       res.status(500).json({
         success: false,
         message: "Server error"
+      })
+    }
+  }
+  async placeDetails(req, res, next) {
+    try{
+      let itemId = req.params.id;
+      let appartment = await appartmentModel
+      .findOne({ itemId })
+      .populate({ path: "bids", options: { sort: { amountMoney: -1 },limit:1 } })
+      console.log(appartment)
+      if(!appartment){
+        return res.status(404).json({
+          success:false,
+          message: "resource not found",
+        });
+      }
+      return res.status(200).json({
+        success:true,
+        message: "success",
+        data: {
+          appartment
+        },
+      });
+    }catch(err){
+      return res.status(500).json({
+        success:false,
+        message: err.message,
+
       });
     }
 

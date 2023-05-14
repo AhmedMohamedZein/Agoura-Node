@@ -5,13 +5,14 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
-const cookieParser = require('cookie-parser');
-
 const NotificationScheduler = require("./Utils/NotificationScheduler");
 const userRoutes = require("./Routes/register");
 const loginRoutes = require("./Routes/login");
 const HomeRoute = require(path.join(__dirname, "./Routes/Home"));
 const placeRoutes = require(path.join(__dirname, "./Routes/place"));
+const bidRoutes = require(path.join(__dirname, "./Routes/bid"));
+const cookieParser = require('cookie-parser');
+
 
 //#endregion
 
@@ -40,6 +41,8 @@ app.use("/register", userRoutes);
 app.use("/auth", loginRoutes);
 app.use("/home", HomeRoute);
 app.use("/place", placeRoutes);
+app.use("/bid", bidRoutes);
+
 //#endregion
 
 //#region Database Connetion
