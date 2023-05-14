@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     phone: { type: String, required: false },
+    image:{type: String},
     ownedApartments: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Apartment" },
     ],
@@ -16,7 +17,6 @@ const userSchema = new mongoose.Schema(
       { type: mongoose.Schema.Types.ObjectId, ref: "Notification" },
     ],
     cart: [{ type: mongoose.Schema.Types.ObjectId, ref: "Apartment" }],
-    about: { type: String, required: false },
   },
   { timestamps: true }
 );
