@@ -90,7 +90,7 @@ class PlaceController {
         kitchen: parseInt(req.body.features.kitchen),
         guests: parseInt(req.body.features.guests),
       },
-      price: Number(req.body.startBid),
+      startBid: Number(req.body.startBid),
       images: req.body.images,
       owner: apartmentOwner._id,
       bids: [],
