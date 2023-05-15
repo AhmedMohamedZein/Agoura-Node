@@ -11,6 +11,7 @@ const loginRoutes = require("./Routes/login");
 const HomeRoute = require(path.join(__dirname, "./Routes/Home"));
 const placeRoutes = require(path.join(__dirname, "./Routes/place"));
 const bidRoutes = require(path.join(__dirname, "./Routes/bid"));
+const ProfileRoutes = require(path.join(__dirname , './Routes/Profile'))
 const cookieParser = require('cookie-parser');
 
 
@@ -42,6 +43,7 @@ app.use("/auth", loginRoutes);
 app.use("/home", HomeRoute);
 app.use("/place", placeRoutes);
 app.use("/bid", bidRoutes);
+app.use("/users", ProfileRoutes);
 
 //#endregion
 
