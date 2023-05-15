@@ -5,14 +5,15 @@ const User = require(path.join(__dirname, "../Models/User"));
 
 isUser = async (req, res, next) => {
   let token = req.headers["authorization"];
-  console.log(token);
   if (token) {
     user = Token.verifyToken(token);
+    console.log(user);
 
-    if (user) {
+    if (user.email) {
       let userData = await User.findOne({ email: user.email });
-      userData = userData.toObject();
-      delete userData["password"];
+      console.log(typeof user.email);
+
+      userData = handleData(userData);
       req.user = userData;
       next();
     }
@@ -27,5 +28,12 @@ isUser = async (req, res, next) => {
     message: "Token not found",
   });
 };
+
+function handleData(data) {
+  data = data.toObject();
+  delete data["password"];
+
+  return data;
+}
 
 module.exports = isUser;
