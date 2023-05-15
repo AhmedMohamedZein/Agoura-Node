@@ -16,23 +16,24 @@ isAdmin = async (req, res, next) => {
       if (userData.isAdmin) {
         req.user = userData;
         next();
+      } else {
+        return res.status(403).json({
+          succes: false,
+          message: "user does't have the required privilages",
+        });
       }
-
-      return res.status(403).json({
+    } else {
+      return res.status(401).json({
         succes: false,
-        message: "user does't have the required privilages",
+        message: "user not exist",
       });
     }
+  } else {
     return res.status(401).json({
       succes: false,
-      message: "user not exist",
+      message: "Token not found",
     });
   }
-
-  return res.status(401).json({
-    succes: false,
-    message: "Token not found",
-  });
 };
 
 function handleData(data) {
