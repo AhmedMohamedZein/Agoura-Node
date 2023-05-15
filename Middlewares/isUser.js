@@ -16,7 +16,16 @@ isUser = async (req, res, next) => {
       req.user = userData;
       next();
     }
+    return res.status(401).json({
+      succes: false,
+      message: "user not exist",
+    });
   }
+
+  return res.status(401).json({
+    succes: false,
+    message: "Token not found",
+  });
 };
 
 module.exports = isUser;
