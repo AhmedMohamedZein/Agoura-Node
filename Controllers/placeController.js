@@ -113,33 +113,35 @@ class PlaceController {
     }
   }
   async placeDetails(req, res, next) {
-    try{
+    try {
       let itemId = req.params.id;
       let appartment = await appartmentModel
-      .findOne({ itemId })
-      .populate({ path: "bids", options: { sort: { amountMoney: -1 },limit:1 } })
-      console.log(appartment)
-      if(!appartment){
+        .findOne({ itemId })
+        .populate({
+          path: "bids",
+          options: { sort: { amountMoney: -1 }, limit: 1 },
+        });
+      console.log(appartment);
+      if (!appartment) {
         return res.status(404).json({
-          success:false,
+          success: false,
           message: "resource not found",
         });
       }
       return res.status(200).json({
-        success:true,
+        success: true,
         message: "success",
         data: {
-          appartment
+          appartment,
         },
       });
-    }catch(err){
+    } catch (err) {
       return res.status(500).json({
-        success:false,
+        success: false,
         message: err.message,
 
       });
     }
-
   }
 }
 
