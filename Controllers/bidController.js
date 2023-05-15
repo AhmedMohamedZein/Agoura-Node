@@ -1,8 +1,7 @@
 const bidModel = require("../Models/Bid");
 const appartmentModel = require("../Models/Apartment");
 const { error } = require("console");
-const Token=require("./Auth/Token");
-const Apartment = require("../Models/Apartment");
+
 
 class PlaceController {
   
