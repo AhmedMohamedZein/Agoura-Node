@@ -13,7 +13,7 @@ const placeRoutes = require(path.join(__dirname, "./Routes/place"));
 const bidRoutes = require(path.join(__dirname, "./Routes/bid"));
 const ProfileRoutes = require(path.join(__dirname , './Routes/Profile'))
 const cookieParser = require('cookie-parser');
-const dashboardRoutes=require("./Routes/dashboard")
+const dashboardRoutes=require(path.join(__dirname , './Routes/dashboard'))
 
 
 //#endregion
