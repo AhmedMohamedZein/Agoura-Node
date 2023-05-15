@@ -3,25 +3,19 @@ const path = require("path");
 const Token = require("../Controllers/Auth/Token");
 const User = require(path.join(__dirname, "../Models/User"));
 
-isAdmin = async (req, res, next) => {
+isUser = async (req, res, next) => {
   let token = req.headers["authorization"];
-  console.log(token);
   if (token) {
     user = Token.verifyToken(token);
+    console.log(user);
 
-    if (user) {
+    if (user.email) {
       let userData = await User.findOne({ email: user.email });
-      userData = handleData(userData);
+      console.log(typeof user.email);
 
-      if (userData.isAdmin) {
-        req.user = userData;
-        next();
-      } else {
-        return res.status(403).json({
-          succes: false,
-          message: "user does't have the required privilages",
-        });
-      }
+      userData = handleData(userData);
+      req.user = userData;
+      next();
     } else {
       return res.status(401).json({
         succes: false,
@@ -43,4 +37,4 @@ function handleData(data) {
   return data;
 }
 
-module.exports = isAdmin;
+module.exports = isUser;
