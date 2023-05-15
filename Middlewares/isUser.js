@@ -16,17 +16,18 @@ isUser = async (req, res, next) => {
       userData = handleData(userData);
       req.user = userData;
       next();
+    } else {
+      return res.status(401).json({
+        succes: false,
+        message: "user not exist",
+      });
     }
+  } else {
     return res.status(401).json({
       succes: false,
-      message: "user not exist",
+      message: "Token not found",
     });
   }
-
-  return res.status(401).json({
-    succes: false,
-    message: "Token not found",
-  });
 };
 
 function handleData(data) {
