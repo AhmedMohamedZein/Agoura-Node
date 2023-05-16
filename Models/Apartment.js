@@ -20,6 +20,8 @@ const apartmentSchema = new mongoose.Schema({
   agreeToTerms: { type: Boolean, required: true },
   timeLeft: { type: Date, required: true },
   duration: { type: Number, required: true },
+  status: { type: String, required: true },
+
   
 },
 { timestamps: true });
