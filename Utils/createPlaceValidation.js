@@ -6,7 +6,7 @@ const addressSchema = {
     type: "object",
     properties: {
         country: { type: "string" },
-        city: { type: "string" },
+        city: { type: "string"  },
         street: { type: "string" },
         zipCode: { type: "string" }
     },
@@ -17,11 +17,41 @@ const addressSchema = {
 const featuresSchema = {
     type: "object",
     properties: {
-        bedRooms: { type: "string" },
-        baths: { type: "string" },
-        area: { type: "string" },
-        kitchen: { type: "string" },
-        guests: { type: "string" }
+        bedRooms: { anyOf: [
+          {
+            type: "number",
+          },
+          {
+            type: "string",
+          }] },
+        baths: {  anyOf: [
+          {
+            type: "number",
+          },
+          {
+            type: "string",
+          }]},
+        area: {  anyOf: [
+          {
+            type: "number",
+          },
+          {
+            type: "string",
+          }]},
+        kitchen: {  anyOf: [
+          {
+            type: "number",
+          },
+          {
+            type: "string",
+          }]},
+        guests: { anyOf: [
+          {
+            type: "number",
+          },
+          {
+            type: "string",
+          }]}
     },
     required: ["bedRooms", "baths", "area", "kitchen", "guests"],
     additionalProperties: false
@@ -34,8 +64,21 @@ const createPlace = {
     address: addressSchema,
     features : featuresSchema,
     aboutPlace : { type: "string"},
-    startBid : { type: "string"},
-    duration : { type: "string"},
+    startBid : { anyOf: [
+      {
+        type: "number",
+      },
+      {
+        type: "string",
+      }]
+    },
+    duration : {  anyOf: [
+      {
+        type: "number",
+      },
+      {
+        type: "string",
+      }]},
     agreeToTerms : { type : "boolean" },
     images: { type: "array",
         items: {
