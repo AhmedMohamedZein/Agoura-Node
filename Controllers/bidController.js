@@ -123,7 +123,44 @@ class bidController {
     
       
   }
- 
+  async approve(req, res, next) {
+    try{
+      let apartmentID = req.body._id;
+      
+      let appartment = await appartmentModel
+        .findOneAndUpdate({ _id:apartmentID },{status:"approved"},{new:true})
+
+      if(!appartment){
+        return res.status(404).json({
+          success:false,
+          message: "appartment not found",
+        });
+      }
+      let notification=await notificationModel.create({
+        user:appartment.owner,
+        message:"congratulations your bid is approved",
+        href:`/place/${appartment.itemId}`
+      })
+      await userModel.findByIdAndUpdate({_id:appartment.owner},{$push: { notifications: notification._id }})
+
+      return res.status(201).json({
+        success: true,
+        message: "bid approved successfully",
+        data:{
+          appartment
+        }
+      });
+    }catch(err){
+      console.log(err)
+      return res.json({
+        success:false,
+        message: err.message,
+      });
+    }
+    
+      
+  }
+  
 
 }
 
