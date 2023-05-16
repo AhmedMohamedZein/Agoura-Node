@@ -160,7 +160,38 @@ class bidController {
     
       
   }
-  
+  async notes(req, res, next) {
+    try{
+      let apartmentID = req.params.id;
+      let appartment = await appartmentModel
+        .findOne({ _id:apartmentID })
+      if(!appartment){
+        return res.status(404).json({
+          success:false,
+          message: "appartment not found",
+        });
+      }
+      let notification=await notificationModel.create({
+        user:appartment.owner,
+        message:req.body.notes,
+        href:`/place/${appartment.itemId}/edit`
+      })
+      await userModel.findByIdAndUpdate({_id:appartment.owner},{$push: { notifications: notification._id }})
+      return res.status(201).json({
+        success: true,
+        message: "notes sent to user successfully",
+        data: {
+          appartment
+        },
+      });
+    }catch(err){
+      console.log(err)
+      return res.json({
+        success:false,
+        message: err.message,
+      });
+    }
+  }
 
 }
 
