@@ -35,7 +35,7 @@ class GoogleLogin extends iLogin {
                 });
                 await user.save()
             }
-            let token=jwtToken.createToken({userId:user._id,email:user.email})
+            let token=jwtToken.createToken({userId:user._id,email:user.email,isAdmin:user.isAdmin})
             
             return {
                 myToken:token,

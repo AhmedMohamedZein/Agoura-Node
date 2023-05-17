@@ -43,7 +43,7 @@ class SystemLogin extends iLogin {
         }
             
         //create Token
-        var token = Token.createToken({'email': useremail});
+        var token = Token.createToken({email: useremail,isAdmin:foundedUser.isAdmin,userId:foundedUser._id});
         return {
             myToken : token,
             success : true ,
