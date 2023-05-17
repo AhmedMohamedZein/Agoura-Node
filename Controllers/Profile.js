@@ -15,7 +15,7 @@ class ProfileController {
         try {
           const user = await User.findOne({_id: id});
           if (!user) {
-            return res.status(404).json({ error: 'User not found' });
+            return res.status(404).json({ error: 'User Not Found' });
           }
           return res.json(user);
         } catch (err) {
