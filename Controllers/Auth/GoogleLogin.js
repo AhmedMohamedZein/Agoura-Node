@@ -32,6 +32,7 @@ class GoogleLogin extends iLogin {
                     name: payload["name"],
                     email: payload["email"],
                     password: process.env.secret_password,
+                    image: payload["picture"]
                 });
                 await user.save()
             }
