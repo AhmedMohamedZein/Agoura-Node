@@ -68,6 +68,25 @@ class ProfileController {
         })
       }
     }
+    async getUserApartments(req , res){
+
+      try{
+
+        const apartmentsData = await Apartment.findOne({user: req.user._id})
+        console.log(ordersData)
+        return res.status(200).json({
+          success: true,
+          message: 'data fetched successfully',
+          data: ordersData
+        })
+
+      }catch(error){
+        return res.status(500).json({
+          success: false,
+          message: "there is something wrong"
+        })
+      }
+    }
 }
 
 
