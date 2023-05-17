@@ -25,7 +25,6 @@ const uploadImage = async (req, res , next) => {
     });
 
     const urls = await Promise.all(promises); // All the urls from cloudinary as array [] 
-    console.log("Urls in array form: ",urls);
     req.body.images= urls;
     next();
   } catch (error) {

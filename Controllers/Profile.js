@@ -4,12 +4,6 @@ const Bid = require(path.join(__dirname , '../Models/Bid'))
 const Order = require(path.join(__dirname , '../Models/Order'))
 const Apartment = require(path.join(__dirname , '../Models/Apartment'))
 
-
-// function setupRequest(req, res, next) {
-//   req.body=JSON.parse(req.body.data)
-//   req.body.images=[]
-//   next()
-// }
 class ProfileController {
 
     async getUserProfile(req, res) {
@@ -26,9 +20,27 @@ class ProfileController {
       }
 
     async updateUserProfile(req , res){
-      console.log(req.params.id)
-      console.log(req.file)
-      console.log(req.body)
+      let userID = req.params.id
+      let {userName , email} = req.body
+      let userImage = req.body.images[0]
+      try{
+        let isUpdated = await User.findOneAndUpdate({_id: userID} , {name:userName , email, image:userImage } , {new:true})
+        if(isUpdated){
+          return res.status(200).json({
+              success:true,
+              message: "user updated successfully",
+              data: isUpdated
+            })
+        }else{
+          throw new Error("user not found")
+        }
+      }catch(error){
+        console.log(err)
+        return res.json({
+          success:false,
+          message: err.message,
+        });
+      }
     }
 
     async getUserBids(req , res){
@@ -86,7 +98,6 @@ class ProfileController {
       }
     }
 }
-
 
 
 module.exports = new ProfileController()
