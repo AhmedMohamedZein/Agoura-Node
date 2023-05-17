@@ -30,7 +30,11 @@ class PlaceController {
     let numberOfBidders = [
       ...new Set(currentBid.bids.map((item) => item.user.toString())),
     ];
-
+    if(currentBid.bids.length >0){
+      currentBid=currentBid.bids[0].amountMoney
+    }else{
+      currentBid=appartment.startBid
+    }
     return res.json({
       message: "success",
       data: {
@@ -38,11 +42,11 @@ class PlaceController {
         aboutPlace: appartment.aboutPlace,
         image: appartment.images[0],
         itemNumber: appartment.itemId,
-        currentBid: currentBid.bids[0].amountMoney,
+        currentBid: currentBid,
         numberOfBids: appartment.bids.length,
         numberOfBidders: numberOfBidders.length,
-        timeLeft: "3 hours 17 mins 12 secs",
-        duration: "7 days",
+        timeLeft: appartment.timeLeft,
+        duration: appartment.duration,
         historyOfBids: appartment.bids,
       },
     });
@@ -70,7 +74,7 @@ class PlaceController {
         message : "Unauthorized"
       });
     }
-
+    
     const apartmentOwner = await User.findOne({ email: user.email });
     const uniqueId = uuidv4(); // for the itemId attribute
     const newApartment = new appartmentModel({
@@ -92,7 +96,9 @@ class PlaceController {
       },
       startBid: Number(req.body.startBid),
       images: req.body.images,
+      duration: req.body.duration,
       owner: apartmentOwner._id,
+      timeLeft:Date.now()+req.body.duration*1000*3600*24,
       bids: [],
       agreeToTerms: req.body.agreeToTerms,
     });
@@ -102,7 +108,8 @@ class PlaceController {
       await newApartment.save();
       res.status(201).json({
         success: true,
-        message: "Apartment created successfully"
+        message: "Apartment created successfully",
+        itemId:uniqueId
       });
     } catch (error) {
       console.error(error);
@@ -113,33 +120,35 @@ class PlaceController {
     }
   }
   async placeDetails(req, res, next) {
-    try{
+    try {
       let itemId = req.params.id;
       let appartment = await appartmentModel
-      .findOne({ itemId })
-      .populate({ path: "bids", options: { sort: { amountMoney: -1 },limit:1 } })
-      console.log(appartment)
-      if(!appartment){
+        .findOne({ itemId })
+        .populate({
+          path: "bids",
+          options: { sort: { amountMoney: -1 }, limit: 1 },
+        });
+      console.log(appartment);
+      if (!appartment) {
         return res.status(404).json({
-          success:false,
+          success: false,
           message: "resource not found",
         });
       }
       return res.status(200).json({
-        success:true,
+        success: true,
         message: "success",
         data: {
-          appartment
+          appartment,
         },
       });
-    }catch(err){
+    } catch (err) {
       return res.status(500).json({
-        success:false,
+        success: false,
         message: err.message,
 
       });
     }
-
   }
 }
 

@@ -8,9 +8,9 @@ const addressSchema = {
         country: { type: "string" },
         city: { type: "string" },
         street: { type: "string" },
-        zipcode: { type: "string" }
+        zipCode: { type: "string" }
     },
-    required: ["country", "city", "street", "zipcode"],
+    required: ["country", "city", "street", "zipCode"],
     additionalProperties: false
 };
 
