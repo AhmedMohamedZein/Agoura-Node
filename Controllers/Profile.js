@@ -54,7 +54,6 @@ class ProfileController {
       try{
 
         const ordersData = await Order.findOne({user: req.user._id})
-        console.log(ordersData)
         return res.status(200).json({
           success: true,
           message: 'data fetched successfully',
@@ -73,7 +72,6 @@ class ProfileController {
       try{
 
         const apartmentsData = await Apartment.findOne({user: req.user._id})
-        console.log(apartmentsData)
         return res.status(200).json({
           success: true,
           message: 'data fetched successfully',
