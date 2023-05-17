@@ -73,11 +73,11 @@ class ProfileController {
       try{
 
         const apartmentsData = await Apartment.findOne({user: req.user._id})
-        console.log(ordersData)
+        console.log(apartmentsData)
         return res.status(200).json({
           success: true,
           message: 'data fetched successfully',
-          data: ordersData
+          data: apartmentsData
         })
 
       }catch(error){
