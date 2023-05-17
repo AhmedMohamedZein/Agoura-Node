@@ -1,6 +1,8 @@
 const path = require('path')
 const User = require(path.join(__dirname , '../Models/User'))
 const Bid = require(path.join(__dirname , '../Models/Bid'))
+const Order = require(path.join(__dirname , '../Models/Order'))
+const Apartment = require(path.join(__dirname , '../Models/Apartment'))
 
 
 // function setupRequest(req, res, next) {
@@ -51,7 +53,7 @@ class ProfileController {
 
       try{
 
-        const ordersData = await Bid.findOne({user: req.user._id})
+        const ordersData = await Order.findOne({user: req.user._id})
         console.log(ordersData)
         return res.status(200).json({
           success: true,
