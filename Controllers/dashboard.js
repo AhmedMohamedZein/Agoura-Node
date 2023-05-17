@@ -7,7 +7,8 @@ class DashBoard {
 
     try {
       // const token = req.headers['authorization'] token!=null
-      const appartmentsData = await appartments.find({});
+      const appartmentsData = await appartments.find({}).populate('owner',{ name: 1 });
+      console.log(appartments)
 
       if (appartmentsData) {
         await res.status(200).json(appartmentsData);
