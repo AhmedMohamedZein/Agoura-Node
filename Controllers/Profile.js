@@ -1,5 +1,6 @@
 const path = require('path')
 const User = require(path.join(__dirname , '../Models/User'))
+const Bid = require(path.join(__dirname , '../Models/Bid'))
 
 
 // function setupRequest(req, res, next) {
@@ -26,6 +27,25 @@ class ProfileController {
       console.log(req.params.id)
       console.log(req.file)
       console.log(req.body)
+    }
+
+    async getUserBids(req , res){
+
+      try{
+
+        const bidsData = await Bid.findOne({user: req.user._id})
+        return res.status(200).json({
+          success: true,
+          message: 'data fetched successfully',
+          data: bidsData
+        })
+
+      }catch(error){
+        return res.status(500).json({
+          success: false,
+          message: "there is something wrong"
+        })
+      }
     }
 }
 
