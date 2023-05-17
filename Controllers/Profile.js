@@ -1,5 +1,8 @@
 const path = require('path')
 const User = require(path.join(__dirname , '../Models/User'))
+const Bid = require(path.join(__dirname , '../Models/Bid'))
+const Order = require(path.join(__dirname , '../Models/Order'))
+const Apartment = require(path.join(__dirname , '../Models/Apartment'))
 
 class ProfileController {
 
@@ -8,7 +11,7 @@ class ProfileController {
         try {
           const user = await User.findOne({_id: id});
           if (!user) {
-            return res.status(404).json({ error: 'User not found' });
+            return res.status(404).json({ error: 'User Not Found' });
           }
           return res.json(user);
         } catch (err) {
@@ -37,6 +40,61 @@ class ProfileController {
           success:false,
           message: err.message,
         });
+      }
+    }
+
+    async getUserBids(req , res){
+
+      try{
+
+        const bidsData = await Bid.findOne({user: req.user._id})
+        return res.status(200).json({
+          success: true,
+          message: 'data fetched successfully',
+          data: bidsData
+        })
+
+      }catch(error){
+        return res.status(500).json({
+          success: false,
+          message: "there is something wrong"
+        })
+      }
+    }
+    async getUserOrders(req , res){
+
+      try{
+
+        const ordersData = await Order.findOne({user: req.user._id})
+        return res.status(200).json({
+          success: true,
+          message: 'data fetched successfully',
+          data: ordersData
+        })
+
+      }catch(error){
+        return res.status(500).json({
+          success: false,
+          message: "there is something wrong"
+        })
+      }
+    }
+    async getUserApartments(req , res){
+
+      try{
+
+        const apartmentsData = await Apartment.findOne({user: req.user._id})
+        return res.status(200).json({
+          success: true,
+          message: 'data fetched successfully',
+          data: apartmentsData
+        })
+
+      }catch(error){
+        return res.status(500).json({
+          success: false,
+          message: "there is something wrong"
+        })
       }
     }
 }
