@@ -23,13 +23,13 @@ isAdmin = async (req, res, next) => {
         });
       }
     } else {
-      return res.status(401).json({
+      return res.status(400).json({
         succes: false,
         message: "user not exist",
       });
     }
   } else {
-    return res.status(401).json({
+    return res.status(400).json({
       succes: false,
       message: "Token not found",
     });
