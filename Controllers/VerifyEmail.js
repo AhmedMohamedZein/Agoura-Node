@@ -10,12 +10,12 @@ class VERIFY_EMAIL{
 
       // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
-        host: "smtp.ethereal.email",
-        port: 225,
-        secure: false, // true for 465, false for other ports
+        service: "gmail",
+       
+      // true for 465, false for other ports
         auth: {
-            user: testAccount.user, // generated ethereal user
-            pass: testAccount.pass, // generated ethereal password
+            user: 'omaralaa2698@gmail.com', // generated ethereal user
+            pass: 'sdsgbxwrghumxmaq', // generated ethereal password
         },
     });
     
