@@ -46,6 +46,8 @@ app.use("/place", placeRoutes);
 app.use("/bid", bidRoutes);
 app.use("/users", ProfileRoutes);
 app.use("/dashboard", dashboardRoutes);
+app.use("/verify", verifyEmailRoute);
+
 
 //#endregion
 

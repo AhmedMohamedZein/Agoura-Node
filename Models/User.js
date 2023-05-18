@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema(
       { type: mongoose.Schema.Types.ObjectId, ref: "Notification" },
     ],
     cart: [{ type: mongoose.Schema.Types.ObjectId, ref: "Apartment" }],
-    verified: {type: Boolean,required: true, default: false}
+    isVerified: {type: Boolean,required: true, default: false}
   },
   { timestamps: true }
 );
