@@ -19,38 +19,11 @@ class VERIFY_EMAIL{
         },
     });
     
-    //   create reusable transporter object using the default SMTP transport
-
-    //   let transporter = nodemailer.createTransport({
-    //       host: "smtp.ethereal.email",
-    //       port: 2525,
-    //       secure: false, // true for 465, false for other ports
-    //       auth: {
-    //       user: testAccount, // generated ethereal user
-    //       pass: testAccountpass, // generated ethereal password
-    //     },
-    //   });
+   
 
 
 
-    //   var transporter = nodemailer.createTransport({
-    //     host: "sandbox.smtp.mailtrap.io",
-    //     port: 587,
-    //     auth: {
-    //       user: "2f2cc136ac7789",
-    //       pass: "86bb335407f63e"
-    //     }
-    //   });
 
-
-    //   const transporter = nodemailer.createTransport({
-    //     host: 'smtp.ethereal.email',
-    //     port: 587,
-    //     auth: {
-    //         user: 'keven55@ethereal.email',
-    //         pass: 'Yk1TvvvS3n3z1hTuHq'
-    //     }
-    // });
 
 
       var message= {
@@ -78,14 +51,61 @@ class VERIFY_EMAIL{
     })
 
 
+    let config = {
+        service : 'gmail',
+        auth : {
+            user: 'omaralaa2698@gmail.com', 
+            pass: 'sdsgbxwrghumxmaq', =
+        }
+    }
+
+    let transporter = nodemailer.createTransport(config);
+
+    let MailGenerator = new Mailgen({
+        theme: "default",
+        product : {
+            name: "Mailgen",
+            link : 'https://mailgen.js/'
+        }
+    })
+
+    let response = {
+        body: {
+            name : "Daily Tuition",
+            intro: "Your bill has arrived!",
+            table : {
+                data : [
+                    {
+                        item : "Nodemailer Stack Book",
+                        description: "A Backend application",
+                        price : "$10.99",
+                    }
+                ]
+            },
+            outro: "Looking forward to do more business"
+        }
+    }
+
+    let mail = MailGenerator.generate(response)
+
+    let message = {
+        from : EMAIL,
+        to : userEmail,
+        subject: "Place Order",
+        html: mail
+    }
+
+    transporter.sendMail(message).then(() => {
+        return res.status(201).json({
+            msg: "you should receive an email"
+        })
+    }).catch(error => {
+        return res.status(500).json({ error })
+    })
+
 
     
-    //   console.log("Message sent: %s", info.messageId);
-      // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
     
-      // Preview only available when sending through an Ethereal account
-    //   console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-      // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
     }
     
     
