@@ -24,33 +24,6 @@ class VERIFY_EMAIL{
 
 
 
-
-
-    //   var message= {
-    //     from: '"Fred Foo 👻" <foo@example.com>', // sender address
-    //     to: "bar@example.com, baz@example.com", // list of receivers
-    //     subject: "Hello ✔", // Subject line
-    //     text: "Hello world?", // plain text body
-    //     html: "<b>Hello world?</b>", // html body
-    //   }
-    
-      // send mail with defined transport object
-    //   let info = await transporter.sendMail(message);
-
-
-
-    //   await transporter.sendMail(message).then((info) => {
-    //     return res.status(201).json({ 
-    //         msg: "you should receive an email",
-    //         info : info.messageId,
-    //         preview: nodemailer.getTestMessageUrl(info)
-    //     })
-    // }).catch(error => {
-    //     // console.log(info)
-    //     return res.status(500).json({ error })
-    // })
-
-
     let config = {
         service : 'gmail',
         auth : {
@@ -92,7 +65,7 @@ class VERIFY_EMAIL{
         from : 'omaralaa0989@gmail.com',
         to : 'omaralaa2698@gmail.com',
         subject: "confirm your Email",
-        html: " agora bt2olak 7la msa 3la f5adak"
+        html: "Dear user please click the attached link to verify your email http://localhost:9000/verify/confirm "
     }
 
     transporter.sendMail(message).then(() => {
@@ -108,6 +81,11 @@ class VERIFY_EMAIL{
     
     }
     
+    emailVerifire(req,res){
+
+
+
+    }
     
 
 
