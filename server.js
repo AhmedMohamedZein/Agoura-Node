@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 const NotificationScheduler = require("./Utils/NotificationScheduler");
+const EndedBidsScheduler = require("./Utils/EndedBidsScheduler.js");
+
 const userRoutes = require("./Routes/register");
 const loginRoutes = require("./Routes/login");
 const HomeRoute = require(path.join(__dirname, "./Routes/Home"));
@@ -58,8 +60,11 @@ mongoose.connection.on("connected", () => {
 
 //#region TaskScheduling
 
-const notificationScheduler = new NotificationScheduler("0 0 * * *");
+const notificationScheduler = new NotificationScheduler("5 0 * * *");
 notificationScheduler.start();
+
+const endedBidsScheduler = new EndedBidsScheduler("5 0 * * *");
+endedBidsScheduler.start();
 
 //#endregion
 

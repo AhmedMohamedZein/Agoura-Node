@@ -5,7 +5,10 @@ const bidSchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     apartment: { type: mongoose.Schema.Types.ObjectId, ref: 'Apartment' },
     date: { type: Date, required: true },
-    duration: { type: Number, required: true }
+    duration: { type: Number, required: true },
+    expireDate:{type:Date ,default :null},
+    expired:{type:Boolean,default:false}
+
 });
   
 
