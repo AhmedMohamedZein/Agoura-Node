@@ -6,7 +6,7 @@ const apartmentSchema = new mongoose.Schema({
   itemId: { type: String, required: true },
   aboutPlace: { type: String, required: true },
   address: { country: String, city: String, street: String, zipCode: String },
-  status:{type: String, required: true,  enum: ["pending", "approved", "completed", "canceled","sold"]},
+  status:{type: String, enum: ["pending", "approved", "completed", "canceled","sold","closed"] ,default:"pending"},
   features: {
     bedRooms: { type: Number, required: true },
     baths: { type: Number, required: true },
@@ -21,7 +21,6 @@ const apartmentSchema = new mongoose.Schema({
   agreeToTerms: { type: Boolean, required: true },
   timeLeft: { type: Date, required: true },
   duration: { type: Number, required: true },
-  status: { type: String, required: true },
 
   
 },
