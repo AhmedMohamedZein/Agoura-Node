@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const registerController = require("../Controllers/RegisterController");
+const verifyEmailController = require("../Controllers/VerifyEmail");
 
-router.post("", registerController.register);
+router.post("", verifyEmailController.register);
 
 module.exports = router;
