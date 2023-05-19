@@ -99,7 +99,7 @@ class bidController {
       });
     }catch(err){
       console.log(err)
-      return res.json({
+      return res.status(400).json({
         success:false,
         message: err.message,
       });
@@ -153,7 +153,7 @@ class bidController {
       });
     }catch(err){
       console.log(err)
-      return res.json({
+      return res.status(400).json({
         success:false,
         message: err.message,
       });
@@ -190,7 +190,7 @@ class bidController {
       });
     }catch(err){
       console.log(err)
-      return res.json({
+      return res.status(400).json({
         success:false,
         message: err.message,
       });
@@ -224,7 +224,7 @@ class bidController {
       });
     }catch(err){
       console.log(err)
-      return res.json({
+      return res.status(400).json({
         success:false,
         message: err.message,
       });
