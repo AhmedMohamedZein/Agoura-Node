@@ -1,4 +1,7 @@
 const nodemailer = require("nodemailer");
+const path = require("path");
+const user = require(path.join(__dirname , '../Models/User'));
+
 
 class VERIFY_EMAIL{
 
@@ -81,7 +84,25 @@ class VERIFY_EMAIL{
     
     }
     
-    emailVerifire(req,res){
+   async emailVerifire(req,res){
+    //  email="ahmedzain@gmail.com"
+    //  const user = await user.findOne({email: "ahmedzain@gmail.com"})
+     user.findOneAndUpdate(
+        {email: "ahmedzain@gmail.com"}, // filter to match the user to update
+        { isVerified: true}, // update fields
+        { new: true }, // set the option to return the updated user
+        (err) => {
+          if (err) {
+            console.error(err);
+          } else {
+            res.status(200).json({
+                success: true,
+                message: "user added successfully",
+              })
+          }
+        }
+      );
+
 
 
 
