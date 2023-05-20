@@ -32,10 +32,11 @@ class GoogleLogin extends iLogin {
                     name: payload["name"],
                     email: payload["email"],
                     password: process.env.secret_password,
+                    image: payload["picture"]
                 });
                 await user.save()
             }
-            let token=jwtToken.createToken({userId:user._id,email:user.email})
+            let token=jwtToken.createToken({userId:user._id,email:user.email,isAdmin:user.isAdmin})
             
             return {
                 myToken:token,
