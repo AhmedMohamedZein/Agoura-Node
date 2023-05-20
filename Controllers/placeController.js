@@ -128,7 +128,7 @@ class PlaceController {
           path: "bids",
           options: { sort: { amountMoney: -1 }, limit: 1 },
         });
-      console.log(appartment);
+      // console.log(appartment);
       if (!appartment) {
         return res.status(404).json({
           success: false,

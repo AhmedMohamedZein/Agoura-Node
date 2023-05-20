@@ -30,13 +30,13 @@ class bidController {
       if(appartment.status!="approved"){
         return res.status(403).json({
           success:false,
-          message: "sorry,you cannont bid on appartment.",
+          message: "sorry,this appartment is not for bidding.",
         });
       }
       if(appartment.owner.toString()==user._id.toString()){
         return res.status(403).json({
           success:false,
-          message: "you cannont bid on your appartments.",
+          message: "you can't bid on your appartments.",
         });
       }
       
@@ -99,7 +99,7 @@ class bidController {
       });
     }catch(err){
       console.log(err)
-      return res.json({
+      return res.status(400).json({
         success:false,
         message: err.message,
       });
@@ -153,7 +153,7 @@ class bidController {
       });
     }catch(err){
       console.log(err)
-      return res.json({
+      return res.status(400).json({
         success:false,
         message: err.message,
       });
@@ -190,7 +190,7 @@ class bidController {
       });
     }catch(err){
       console.log(err)
-      return res.json({
+      return res.status(400).json({
         success:false,
         message: err.message,
       });
@@ -224,7 +224,7 @@ class bidController {
       });
     }catch(err){
       console.log(err)
-      return res.json({
+      return res.status(400).json({
         success:false,
         message: err.message,
       });
