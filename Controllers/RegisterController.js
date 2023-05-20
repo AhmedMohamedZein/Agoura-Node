@@ -1,8 +1,6 @@
 const userModel = require("../Models/User");
 const validate = require("../Utils/userValidation");
-
 const EventEmitter = require('events');
-
 // create a new instance of the EventEmitter class
 const myEmitter = new EventEmitter();
 
@@ -37,6 +35,7 @@ class RegisterController {
     if (validate(req.body) && password === confirmPassword) {
       await newUser
         .save()
+        myEmitter.emit('register',newUser.id,res)
         .then((user) => {
           return res.json({
             success: true,

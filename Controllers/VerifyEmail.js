@@ -3,6 +3,7 @@ const path = require("path");
 const user = require(path.join(__dirname, "../Models/User"));
 
 class VERIFY_EMAIL {
+
     async emailSender(req, res) {
             let config = {
                 service: "gmail",
@@ -12,38 +13,19 @@ class VERIFY_EMAIL {
                 },
             };
 
-        let transporter = nodemailer.createTransport(config);
+    let transporter = nodemailer.createTransport(config);
 
-        // let MailGenerator = new Mailgen({
-        //     theme: "default",
-        //     product : {
-        //         name: "Mailgen",
-        //         link : 'https://mailgen.js/'
-        //     }
-        // })
-
-        // let response = {
-        //     body: {
-        //         name : "Daily Tuition",
-        //         intro: "Your bill has arrived!",
-        //         table : {
-        //             data : [
-        //                 {
-        //                     item : "Nodemailer Stack Book",
-        //                     description: "A Backend application",
-        //                     price : "$10.99",
-        //                 }
-        //             ]
-        //         },
-        //         outro: "Looking forward to do more business"
-        //     }
-        // }
-
-        // let mail = MailGenerator.generate(response)
+    userId=req.params.id
+    const projection = { email: 1, _id: 0 }; // include only the 'email' field, exclude '_id' field
+       userEmail= await user.findOne({ _id: userId }, projection, function(err, user) {
+          if (err) throw err;
+          console.log(err);
+        });
+      
 
         let message = {
             from: "omaralaa0989@gmail.com",
-            to: "omaralaa2698@gmail.com",
+            to: userEmail,
             subject: "confirm your Email",
             html: "Dear user please click the attached link to verify your email http://localhost:9000/verify/confirm ",
         };
@@ -84,3 +66,36 @@ class VERIFY_EMAIL {
 }
 
 module.exports = new VERIFY_EMAIL();
+
+
+
+
+//#region 1
+        // let MailGenerator = new Mailgen({
+        //     theme: "default",
+        //     product : {
+        //         name: "Mailgen",
+        //         link : 'https://mailgen.js/'
+        //     }
+        // })
+
+        // let response = {
+        //     body: {
+        //         name : "Daily Tuition",
+        //         intro: "Your bill has arrived!",
+        //         table : {
+        //             data : [
+        //                 {
+        //                     item : "Nodemailer Stack Book",
+        //                     description: "A Backend application",
+        //                     price : "$10.99",
+        //                 }
+        //             ]
+        //         },
+        //         outro: "Looking forward to do more business"
+        //     }
+        // }
+
+        // let mail = MailGenerator.generate(response)
+//#endregion 1
+        
