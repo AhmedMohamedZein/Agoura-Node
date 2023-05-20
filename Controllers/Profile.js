@@ -1,3 +1,4 @@
+const { log } = require("console");
 const path = require("path");
 const User = require(path.join(__dirname, "../Models/User"));
 const Bid = require(path.join(__dirname, "../Models/Bid"));
@@ -120,12 +121,12 @@ class ProfileController {
   }
 
   async changePassword(req, res) {
-    let email = req.body.email;
+    let _id = req.params.id;
     let password = req.body.password;
     try {
-      let user = await User.findOne({ email: email });
+      let user = await User.findOne({ _id: _id });
       if (user) {
-        let updatedUser = await User.findOne({ email: email });
+        let updatedUser = await User.findOne({ _id: _id });
         updatedUser.password = password;
         await updatedUser.save();
       }
