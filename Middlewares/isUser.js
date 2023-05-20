@@ -18,13 +18,13 @@ isUser = async (req, res, next) => {
       next();
     } else {
       return res.status(401).json({
-        succes: false,
+        success: false,
         message: "user not exist",
       });
     }
   } else {
     return res.status(401).json({
-      succes: false,
+      success: false,
       message: "Token not found",
     });
   }
