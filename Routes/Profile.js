@@ -22,12 +22,15 @@ router.get("/:id/bids", isUser, ProfileController.getUserBids);
 router.get("/:id/orders", isUser, ProfileController.getUserOrders);
 router.get("/:id/apartments", isUser, ProfileController.getUserApartments);
 router.get("/:id", isUser, ProfileController.getUserProfile);
+router.put("/:id", ProfileController.updateUserProfile);
+
 router.put(
-  "/:id",
+  "/:id/picture",
   upload.array("profileImage"),
-  setupRequest,
+  // setupRequest,
+  isUser,
   uploadImage,
-  ProfileController.updateUserProfile
+  ProfileController.updateUserImage
 );
 router.put("/:id/changepassword", isUser, ProfileController.changePassword);
 module.exports = router;

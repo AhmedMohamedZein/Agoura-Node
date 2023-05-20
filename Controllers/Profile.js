@@ -46,6 +46,33 @@ class ProfileController {
     }
   }
 
+  async updateUserImage(req, res) {
+    let userID = req.user._id;
+    let userImage = req.body.images[0];
+
+    try {
+      let isUpdated = await User.findOneAndUpdate(
+        { _id: userID },
+        { image: userImage },
+        { new: true }
+      );
+      if (isUpdated) {
+        return res.status(201).json({
+          success: true,
+          message: "user image updated successfully",
+          data: isUpdated,
+        });
+      } else {
+        throw new Error("user not found");
+      }
+    } catch (error) {
+      return res.json({
+        success: false,
+        message: error.message,
+      });
+    }
+  }
+
   async getUserBids(req, res) {
     try {
       const bidsData = await Bid.findOne({ user: req.user._id });
