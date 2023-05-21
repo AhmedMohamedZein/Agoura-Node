@@ -5,6 +5,9 @@ const EventEmitter = require('events');
 const myEmitter = new EventEmitter();
 
 myEmitter.once('register',(id,res)=>{
+  // res.json({
+  //   msg:"checkur email"
+  // })
   res.redirect(`/verify/${id}`)
 })
 
@@ -35,14 +38,15 @@ class RegisterController {
     if (validate(req.body) && password === confirmPassword) {
       await newUser
         .save()
-        myEmitter.emit('register',newUser.id,res)
         .then((user) => {
-          return res.json({
-            success: true,
-            message: "user added successfully",
-          });
-        })
-        .catch((err) => {
+          console.log(newUser.id)
+          myEmitter.emit('register',newUser.id,res)
+        //   return res.json({
+        //     success: true,
+        //     message: "user added successfully",
+        //   });
+        // })
+        }).catch((err) => {
           return res.json({
             success: false,
             message: "There is an error",

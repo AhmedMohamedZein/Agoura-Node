@@ -5,23 +5,25 @@ const user = require(path.join(__dirname, "../Models/User"));
 class VERIFY_EMAIL {
 
     async emailSender(req, res) {
-            let config = {
-                service: "gmail",
-                auth: {
-                    user: "omaralaa0989@gmail.com",
-                    pass: "sdsgbxwrghumxmaq",
+         let config = {
+           service: "gmail",
+           auth: {
+                user: "omaralaa0989@gmail.com",
+                pass: "sdsgbxwrghumxmaq",
                 },
             };
-
+            
     let transporter = nodemailer.createTransport(config);
-
-    userId=req.params.id
+            
+    var userId=req.params.id;
+console.log("userrrrrid",userId)
     const projection = { email: 1, _id: 0 }; // include only the 'email' field, exclude '_id' field
-       userEmail= await user.findOne({ _id: userId }, projection, function(err, user) {
+    var userEmail= await user.findOne({ _id: userId }, projection, function(err, user) {
           if (err) throw err;
           console.log(err);
-        });
-      
+        })
+        ;
+      console.log(userEmail)
 
         let message = {
             from: "omaralaa0989@gmail.com",
@@ -41,6 +43,9 @@ class VERIFY_EMAIL {
                 return res.status(500).json({ error });
             });
     }
+
+
+
 
     async emailVerifire(req, res) {
         //  email="ahmedzain@gmail.com"
