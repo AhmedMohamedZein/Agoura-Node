@@ -18,12 +18,12 @@ class VERIFY_EMAIL {
    
     var userId = req.params.id;
     var userEmail= await this.findUser(req)
-    console.log("useremaiiiil",userEmail)
+   
     let message = {
         from: "omaralaa0989@gmail.com",
         to: userEmail,
         subject: "confirm your Email",
-        html:` Dear user please click the attached link to verify your email http://localhost:9000/verify/confirm/${userId}` ,
+        html:`Dear user please click the attached link to verify your email http://localhost:9000/verify/confirm/${userId}` ,
     };
 
         transporter
@@ -40,33 +40,47 @@ class VERIFY_EMAIL {
 
 
 
-     emailVerifire=async(req, res)=> {
+    emailVerifier = async (req, res) => {
         try {
-            await user.findOneAndUpdate(
-                { email: await this.findUser(req) }, // filter to match the user to update
-                { isVerified: true }, // update fields
-                { new: true }
-            );
-            res.status(200).json({
-                success: true,
-                message: "user is verified",
+          const email = await this.findUser(req);
+          console.log(email.email)
+          if(email){
+         await console.log("useremaiiiil",email)
+          const filter = { email: email };
+          const update = { isVerified: true };
+          const options = { new: true };
+      
+          const updatedUser = await user.findOneAndUpdate( { email: email.email }, update , options);
+           console.log("userrrrrrrrrr",updatedUser)
+      
+          if (!updatedUser) {
+            return res.status(404).json({
+              success: false,
+              message: 'User not found',
             });
-        } catch (err) {
-            res.status(404).json({
-                success: false,
-                message: "verification field",
-            });
+          }
+      
+          return res.redirect(`http://localhost:4200/login`);
+       } } catch (err) {
+          return res.status(400).json({
+            success: false,
+            message: 'Verification failed',
+          });
         }
-    }
+      };
 
-     findUser(req){
+     async findUser(req){
         try {
             var userId = req.params.id;
+            console.log(userId)
+            
             const projection = { email: 1, _id: 0 }; // include only the 'email' field, exclude '_id' field
-            return  user.findOne({ _id: userId }, projection).then((userEmail)=>{
+            var userEmail = await user.findById({ _id: userId }, projection).exec();
+                // console.log(userEmail)
             if(userEmail){
+                // consle.log(userEmail)
                 return userEmail
-            }})
+            }
             
            } catch (err) {
             res.status(500).json({

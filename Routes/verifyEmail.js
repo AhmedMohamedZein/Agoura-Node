@@ -4,6 +4,6 @@ const router = express.Router();
 const verifyEmailController = require("../Controllers/VerifyEmail");
 
 router.get("/:id", verifyEmailController.emailSender);
-router.post("/confirm", verifyEmailController.emailVerifire);
+router.get("/confirm/:id", verifyEmailController.emailVerifier);
 
 module.exports = router;
