@@ -1,14 +1,16 @@
 const userModel = require("../Models/User");
 const validate = require("../Utils/userValidation");
-const EventEmitter = require('events');
-// create a new instance of the EventEmitter class
-const myEmitter = new EventEmitter();
+const path = require("path");
+let verifyEvent = require(path.join(__dirname, "./Events/verifyEvent"));
+verifyEvent();
+// const EventEmitter = require('events');
+// // create a new instance of the EventEmitter class
+// const myEmitter = new EventEmitter();
 
-myEmitter.once('register',(id,res)=>{
+// myEmitter.once('register',(id,res)=>{
 
-  res.redirect(`/verify/${id}`)
-})
-
+//   res.redirect(`/verify/${id}`)
+// })
 
 
 class RegisterController {
