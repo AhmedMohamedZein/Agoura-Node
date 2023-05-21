@@ -15,7 +15,6 @@ class VERIFY_EMAIL {
 
     let transporter = nodemailer.createTransport(config);
 
-   
     var userId = req.params.id;
     var userEmail= await this.findUser(req)
    
@@ -30,7 +29,8 @@ class VERIFY_EMAIL {
             .sendMail(message)
             .then(() => {
                 return res.status(201).json({
-                    msg: "you should receive an email",
+                    success:true,
+                    messsge: "you should receive an email",
                 });
             })
             .catch((error) => {
@@ -38,33 +38,28 @@ class VERIFY_EMAIL {
             });
     }
 
-
-
     emailVerifier = async (req, res) => {
         try {
           const email = await this.findUser(req);
           console.log(email.email)
           if(email){
          await console.log("useremaiiiil",email)
-          const filter = { email: email };
           const update = { isVerified: true };
           const options = { new: true };
-      
           const updatedUser = await user.findOneAndUpdate( { email: email.email }, update , options);
-           console.log("userrrrrrrrrr",updatedUser)
-      
-          if (!updatedUser) {
-            return res.status(404).json({
-              success: false,
-              message: 'User not found',
-            });
-          }
+           
+            if (!updatedUser) {
+              return res.status(404).json({
+                success: false,
+                message: 'User not found',
+              });
+            }
       
           return res.redirect(`http://localhost:4200/login`);
        } } catch (err) {
           return res.status(400).json({
-            success: false,
-            message: 'Verification failed',
+              success: false,
+              message: 'Verification failed',
           });
         }
       };
@@ -72,16 +67,11 @@ class VERIFY_EMAIL {
      async findUser(req){
         try {
             var userId = req.params.id;
-            console.log(userId)
-            
             const projection = { email: 1, _id: 0 }; // include only the 'email' field, exclude '_id' field
             var userEmail = await user.findById({ _id: userId }, projection).exec();
-                // console.log(userEmail)
-            if(userEmail){
-                // consle.log(userEmail)
+            if(userEmail){ 
                 return userEmail
             }
-            
            } catch (err) {
             res.status(500).json({
            "error":err
