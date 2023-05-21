@@ -18,6 +18,7 @@ const bidRoutes = require(path.join(__dirname, "./Routes/bid"));
 const ProfileRoutes = require(path.join(__dirname , './Routes/Profile'))
 const cookieParser = require('cookie-parser');
 const dashboardRoutes=require(path.join(__dirname , './Routes/dashboard'))
+const  verifyEmailRoute= require(path.join(__dirname,'./Routes/verifyEmail'))
 
 
 //#endregion
@@ -50,6 +51,8 @@ app.use("/place", placeRoutes);
 app.use("/bid", bidRoutes);
 app.use("/users", ProfileRoutes);
 app.use("/dashboard", dashboardRoutes);
+app.use("/verify", verifyEmailRoute);
+
 
 //#endregion
 

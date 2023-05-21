@@ -1,5 +1,7 @@
 const userModel = require("../Models/User");
 const validate = require("../Utils/userValidation");
+const path = require("path");
+const myEmitter = require(path.join(__dirname, "./Events/verifyEvent"));
 
 
 
@@ -29,12 +31,15 @@ class RegisterController {
       await newUser
         .save()
         .then((user) => {
-          return res.json({
-            success: true,
-            message: "user added successfully",
-          });
-        })
-        .catch((err) => {
+         
+          //emit my event
+          myEmitter.emit('register',newUser.id,res)
+        //   return res.json({
+        //     success: true,
+        //     message: "user added successfully",
+        //   });
+        // })
+        }).catch((err) => {
           return res.json({
             success: false,
             message: "There is an error",
