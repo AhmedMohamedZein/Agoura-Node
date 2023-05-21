@@ -13,28 +13,24 @@ class VERIFY_EMAIL {
             },
         };
 
-        let transporter = nodemailer.createTransport(config);
+    let transporter = nodemailer.createTransport(config);
 
-
-
-        try {
-            var userId = req.params.id;
-            const projection = { email: 1, _id: 0 }; // include only the 'email' field, exclude '_id' field
-            var userEmail = await user.findOne({ _id: userId }, projection)
+    try {
+         var userId = req.params.id;
+         const projection = { email: 1, _id: 0 }; // include only the 'email' field, exclude '_id' field
+         var userEmail = await user.findOne({ _id: userId }, projection)
         } catch (err) {
-            res.status(500).json({
-                message: "internal server error user not found"
-            })
+         res.status(500).json({
+        "error":err
+          })
         }
 
-        console.log(userEmail)
-
-        let message = {
-            from: "omaralaa0989@gmail.com",
-            to: userEmail,
-            subject: "confirm your Email",
-            html: "Dear user please click the attached link to verify your email http://localhost:9000/verify/confirm ",
-        };
+    let message = {
+        from: "omaralaa0989@gmail.com",
+        to: userEmail,
+        subject: "confirm your Email",
+        html: "Dear user please click the attached link to verify your email http://localhost:9000/verify/confirm ",
+    };
 
         transporter
             .sendMail(message)
