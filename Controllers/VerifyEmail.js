@@ -5,32 +5,20 @@ const user = require(path.join(__dirname, "../Models/User"));
 class VERIFY_EMAIL {
 
     async emailSender(req, res) {
-         let config = {
-           service: "gmail",
-           auth: {
+        let config = {
+            service: "gmail",
+            auth: {
                 user: "omaralaa0989@gmail.com",
                 pass: "sdsgbxwrghumxmaq",
-                },
-            };
-            
-    let transporter = nodemailer.createTransport(config);
-         
-    
+            },
+        };
 
-    try{
-        var userId=req.params.id;
+        let transporter = nodemailer.createTransport(config);
 
-console.log("userrrrrid",userId)
 
-    const projection = { email: 1, _id: 0 }; // include only the 'email' field, exclude '_id' field
-    var userEmail= await user.findOne({ _id: userId }, projection)
-    }catch(err){
-        res.status(500).json({
-               message:"internal server error user not found"
-              })
-       }
-        
-      console.log(userEmail)
+
+       
+        console.log(userEmail)
 
         let message = {
             from: "omaralaa0989@gmail.com",
@@ -110,4 +98,4 @@ module.exports = new VERIFY_EMAIL();
 
         // let mail = MailGenerator.generate(response)
 //#endregion 1
-        
+
