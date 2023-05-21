@@ -4,7 +4,7 @@ const user = require(path.join(__dirname, "../Models/User"));
 
 class VERIFY_EMAIL {
 
-    async emailSender(req, res) {
+   emailSender = async (req, res) =>{
         let config = {
             service: "gmail",
             auth: {
@@ -39,10 +39,10 @@ class VERIFY_EMAIL {
 
 
 
-     emailVerifire=async(req, res) {
+     emailVerifire=async(req, res)=> {
         try {
             await user.findOneAndUpdate(
-                { email: "ahmedzain@gmail.com" }, // filter to match the user to update
+                { email: this.findUser(req) }, // filter to match the user to update
                 { isVerified: true }, // update fields
                 { new: true }
             );
@@ -58,7 +58,7 @@ class VERIFY_EMAIL {
         }
     }
 
-    findUser(req){
+    async findUser(req){
         try {
             var userId = req.params.id;
             const projection = { email: 1, _id: 0 }; // include only the 'email' field, exclude '_id' field
