@@ -14,15 +14,22 @@ class VERIFY_EMAIL {
             };
             
     let transporter = nodemailer.createTransport(config);
-            
-    var userId=req.params.id;
+         
+    
+
+    try{
+        var userId=req.params.id;
+
 console.log("userrrrrid",userId)
+
     const projection = { email: 1, _id: 0 }; // include only the 'email' field, exclude '_id' field
-    var userEmail= await user.findOne({ _id: userId }, projection, function(err, user) {
-          if (err) throw err;
-          console.log(err);
-        })
-        ;
+    var userEmail= await user.findOne({ _id: userId }, projection)
+    }catch(err){
+        res.status(500).json({
+               message:"internal server error user not found"
+              })
+       }
+        
       console.log(userEmail)
 
         let message = {

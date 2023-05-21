@@ -5,9 +5,7 @@ const EventEmitter = require('events');
 const myEmitter = new EventEmitter();
 
 myEmitter.once('register',(id,res)=>{
-  // res.json({
-  //   msg:"checkur email"
-  // })
+
   res.redirect(`/verify/${id}`)
 })
 
