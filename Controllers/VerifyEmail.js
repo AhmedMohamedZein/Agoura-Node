@@ -17,7 +17,16 @@ class VERIFY_EMAIL {
 
 
 
-       
+        try {
+            var userId = req.params.id;
+            const projection = { email: 1, _id: 0 }; // include only the 'email' field, exclude '_id' field
+            var userEmail = await user.findOne({ _id: userId }, projection)
+        } catch (err) {
+            res.status(500).json({
+                message: "internal server error user not found"
+            })
+        }
+
         console.log(userEmail)
 
         let message = {
