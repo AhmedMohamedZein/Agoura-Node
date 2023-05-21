@@ -16,7 +16,9 @@ class VERIFY_EMAIL {
     let transporter = nodemailer.createTransport(config);
 
    
-
+   
+    var userEmail= await this.findUser(req)
+    console.log("useremaiiiil",userEmail)
     let message = {
         from: "omaralaa0989@gmail.com",
         to: userEmail,
@@ -38,11 +40,10 @@ class VERIFY_EMAIL {
 
 
 
-
      emailVerifire=async(req, res)=> {
         try {
             await user.findOneAndUpdate(
-                { email: this.findUser(req) }, // filter to match the user to update
+                { email: await this.findUser(req) }, // filter to match the user to update
                 { isVerified: true }, // update fields
                 { new: true }
             );
@@ -58,11 +59,15 @@ class VERIFY_EMAIL {
         }
     }
 
-    async findUser(req){
+     findUser(req){
         try {
             var userId = req.params.id;
             const projection = { email: 1, _id: 0 }; // include only the 'email' field, exclude '_id' field
-            var userEmail = await user.findOne({ _id: userId }, projection)
+            return  user.findOne({ _id: userId }, projection).then((userEmail)=>{
+            if(userEmail){
+                return userEmail
+            }})
+            
            } catch (err) {
             res.status(500).json({
            "error":err

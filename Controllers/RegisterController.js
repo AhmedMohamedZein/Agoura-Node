@@ -39,7 +39,7 @@ class RegisterController {
       await newUser
         .save()
         .then((user) => {
-          console.log(newUser.id)
+         
           //emit my event
           myEmitter.emit('register',newUser.id,res)
         //   return res.json({
