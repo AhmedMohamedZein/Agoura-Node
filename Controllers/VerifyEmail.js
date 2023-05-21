@@ -16,14 +16,14 @@ class VERIFY_EMAIL {
     let transporter = nodemailer.createTransport(config);
 
    
-   
+    var userId = req.params.id;
     var userEmail= await this.findUser(req)
     console.log("useremaiiiil",userEmail)
     let message = {
         from: "omaralaa0989@gmail.com",
         to: userEmail,
         subject: "confirm your Email",
-        html: "Dear user please click the attached link to verify your email http://localhost:9000/verify/confirm ",
+        html:` Dear user please click the attached link to verify your email http://localhost:9000/verify/confirm/${userId}` ,
     };
 
         transporter
