@@ -4,7 +4,6 @@ const createPlaceValidation = require('../Utils/createPlaceValidation');
 const { v4: uuidv4 } = require('uuid');
 const Token = require('./Auth/Token');
 const User = require('../Models/User');
-const { error } = require("console");
 
 
 class PlaceController {
@@ -22,6 +21,14 @@ class PlaceController {
         options: { select: "_id" },
       },
     });
+    if ( !appartment ){
+      console.log(appartment);
+      return res.status(404).json({
+        success:false,
+        message: "appartment not found.",
+      });
+    }
+
     let currentBid = await appartmentModel
       .findOne({ itemId })
       .populate({ path: "bids", options: { sort: { amountMoney: -1 } } })
@@ -35,8 +42,8 @@ class PlaceController {
     }else{
       currentBid=appartment.startBid
     }
-    return res.json({
-      message: "success",
+    return res.status(201).json({
+      success: true,
       data: {
         title: appartment.title,
         aboutPlace: appartment.aboutPlace,
@@ -54,10 +61,6 @@ class PlaceController {
 
 
   async create(req, res) {
-    
-    // Images in req.body.images
-    // ALL THE OTHER Data in req.body.<Everything>
-
     const isValid = createPlaceValidation(req.body);
     if ( !isValid ){
       const errors = createPlaceValidation.errors;
@@ -128,7 +131,7 @@ class PlaceController {
           path: "bids",
           options: { sort: { amountMoney: -1 }, limit: 1 },
         });
-      // console.log(appartment);
+      
       if (!appartment) {
         return res.status(404).json({
           success: false,
