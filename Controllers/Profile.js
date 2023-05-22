@@ -134,11 +134,12 @@ class ProfileController {
         success: true,
         message: "password updated successfully",
       });
-    } catch (error) {}
-    return res.status(500).json({
-      success: false,
-      message: "there is something wrong",
-    });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "there is something wrong",
+      });
+    }
   }
 }
 
