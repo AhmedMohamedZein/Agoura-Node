@@ -107,7 +107,7 @@ class PlaceController {
     });
 
     try {
-      apartmentOwner.ownedApartments.push(newApartment._id);
+      await apartmentOwner.updateOne( { $push: { ownedApartments: newApartment._id } } );
       await newApartment.save();
       res.status(201).json({
         success: true,
