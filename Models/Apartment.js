@@ -12,7 +12,7 @@ const apartmentSchema = new mongoose.Schema(
       enum: ["pending", "approved", "completed", "canceled", "sold", "closed"],
       default: "pending",
     },
-    status: {
+    category: {
       type: String,
       enum: ["luxurious", "studio", "villa", "palace"],
     },
