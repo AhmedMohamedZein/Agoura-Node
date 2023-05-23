@@ -1,9 +1,10 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
-const speakeasy = require('speakeasy');
-const mongoose = require('mongoose');
-const user = require('../Models/User');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
+const speakeasy = require("speakeasy");
+const mongoose = require("mongoose");
+const user = require("../Models/User");
+require("dotenv").config();
 
 class ForgetPasswordController {
   constructor(User) {
@@ -16,110 +17,121 @@ class ForgetPasswordController {
   async sendOTP(req, res) {
     try {
       const email = req.body.email;
-      console.log(email);
+
       // Check if the user with the given email exists
       const userr = await user.findOne({ email: email }).exec();
-      console.log(userr);
-      if (!userr) {
-        throw new Error('User not found');
-        
+
+      let OTP_SECRET = speakeasy.generateSecret().base32;
+
+      if (userr) {
+        userr.otp = OTP_SECRET;
+        await userr.save();
       }
-      
+      if (!userr) {
+        throw new Error("User not found");
+      }
 
       // Generate an OTP and save it to the user's record in the database
-      const otp = speakeasy.totp({
-        secret: process.env.OTP_SECRET,
-        digits: 6,
-        step: 300,
+      const otp = speakeasy.time({
+        secret: OTP_SECRET,
+        step: 600,
+        window: 0,
+        encoding: "base32",
       });
 
-      user.otp = otp;
-      await user.save();
+      //userr.otp = otp;
+      //await userr.save();
 
       // Send the OTP to the user's email address
       const transporter = nodemailer.createTransport({
-        service: 'gmail',
+        service: "gmail",
         auth: {
           user: process.env.EMAIL_USERNAME,
           pass: process.env.EMAIL_PASSWORD,
         },
       });
 
-     mailOptions = {
+      const mailOptions = {
         from: process.env.EMAIL_USERNAME,
         to: email,
-        subject: 'Your OTP for password reset',
+        subject: "Your OTP for password reset",
         text: `Your one-time password is: ${otp}`,
       };
 
       await transporter.sendMail(mailOptions);
 
-      res.status(200).json({ message: 'OTP sent successfully' });
+      res.status(200).json({ message: "OTP sent successfully" });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: 'Something went wrong' });
+      res.status(500).json({ message: "Something went wrong" });
     }
   }
 
   async verifyOTP(req, res) {
     try {
-      const { email, otp } = req.body;
+      const otp = req.body.otp;
+      const email = req.body.email;
+
       // Check if the user with the given email exists
-      const user = await this.User.findOne({ email });
-      if (!user) {
-        throw new Error('User not found');
+      const userverify = await user.findOne({ email: email }).exec();
+      if (!userverify) {
+        throw new Error("User not found");
       }
 
       // Verify the OTP
-      const isOTPValid = speakeasy.totp.verify({
-        secret: process.env.OTP_SECRET,
+
+      const isOTPValid = speakeasy.time.verify({
+        secret: userverify.otp,
         token: otp,
-        digits: 6,
-        step: 300,
+        step: 600,
+        window: 0,
+        encoding: "base32",
       });
 
       if (!isOTPValid) {
-        throw new Error('Invalid OTP');
+        throw new Error("Invalid OTP");
       }
 
       // Generate a reset token and save it to the user's record in the database
       const resetToken = jwt.sign(
-        { userId: user._id },
+        { userId: userverify._id },
         process.env.JWT_SECRET,
-        { expiresIn: '15m' }
+        { expiresIn: "15m" }
       );
 
-      user.resetToken = resetToken;
-      await user.save();
+      userverify.resetToken = resetToken;
+      await userverify.save();
 
       res.status(200).json({ resetToken: resetToken });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: 'Something went wrong' });
+      res.status(500).json({ message: "Something went wrong" });
     }
   }
 
   async resetPassword(req, res) {
     try {
-      const { resetToken, newPassword } = req.body;
+      const resetToken = req.body.resetToken;
+      const newPassword = req.body.newPassword;
       // Verify the reset token
       const decodedToken = jwt.verify(resetToken, process.env.JWT_SECRET);
 
+      console.log(decodedToken);
       // Find the user by ID and reset their password
-      const user = await this.User.findById(decodedToken.userId);
-      if (!user) {
-        throw new Error('User not found');
+      const userpass = await user.findById(decodedToken.userId);
+      if (!userpass) {
+        throw new Error("User not found");
       }
 
-      const hashedPassword = await bcrypt.hash(newPassword, 10);
-      user.password = hashedPassword;
-      user.resetToken = null;
-      await user.save();
+      userpass.password = newPassword;
+      userpass.resetToken = null;
 
-      res.status(200).json({ message: 'Password reset successful' });
+      await userpass.save();
+
+      res.status(200).json({ message: "Password reset successful" });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: 'Something went wrong' });
+      res.status(500).json({ message: "Something went wrong" });
     }
   }
 }
