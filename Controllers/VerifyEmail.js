@@ -34,7 +34,7 @@ class VERIFY_EMAIL {
 
       var response = {
         body: {
-            name: 'John Appleseed',
+            name: 'New Agorian',
             intro: 'Welcome to agora! We\'re very excited to have you on board.',
             action: {
                 instructions: 'To get started with agora, please click here:',
