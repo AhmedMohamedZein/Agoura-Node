@@ -21,8 +21,6 @@ class VERIFY_EMAIL {
     var userEmail= await this.findUser(req)
    
 
-
-
     let MailGenerator = new Mailgen({
           theme: "default",
           product : {
@@ -48,8 +46,9 @@ class VERIFY_EMAIL {
         }
     };
 
-    let mail = MailGenerator.generate(response)
 
+
+    let mail = MailGenerator.generate(response)
     let message = {
       from: "omaralaa0989@gmail.com",
       to: userEmail,
@@ -71,6 +70,7 @@ class VERIFY_EMAIL {
                 return res.status(500).json({ error });
             });
     }
+
 
     emailVerifier = async (req, res) => {
         try {
