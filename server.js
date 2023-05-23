@@ -9,6 +9,7 @@ const NotificationScheduler = require('./Utils/NotificationScheduler')
 const userRoutes = require("./Routes/register");
 const loginRoutes = require('./Routes/login');
 const HomeRoute = require(path.join(__dirname , './Routes/Home'));
+const forgetPasswordRoutes = require('./Routes/forgetPasswordRoutes');
 dotenv.config();
 
 //#endregion
@@ -37,6 +38,7 @@ app.get("/", (req, res) => {
 app.use("/register", userRoutes);
 app.use('/auth' , loginRoutes);
 app.use('/home' , HomeRoute);
+app.use('/forget-password' , forgetPasswordRoutes);
 //#endregion
 
 
