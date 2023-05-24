@@ -6,15 +6,11 @@ const path = require("path");
 
 class DashBoard {
   appartmentsData = async (req, res) => {
-    console.log("test");
-
     try {
       // const token = req.headers['authorization'] token!=null
       const appartmentsData = await appartments
         .find({})
         .populate("owner", { name: 1 });
-      console.log(appartments);
-
       if (appartmentsData) {
         await res.status(200).json(appartmentsData);
       } else {
@@ -28,22 +24,21 @@ class DashBoard {
 
  async getAllUsers(req, res) {
     try {
-     let allUsersData =await users.find({},{ name: 1, email: 1, _id: 1, isVerified:1, bids:1, ownedApartments:1 })
-      console.log(allUsersData)
-      
-   return res.status(200).json({
-          success: true,
-          message: "data retrieved successfully",
-          data: allUsersData,
-        });
-    
+      let allUsersData =await users.find({},{ name: 1, email: 1, _id: 1, isVerified:1, bids:1, ownedApartments:1 })      
+      return res.status(200).json({
+        success: true,
+        message: "data retrieved successfully",
+        data: allUsersData,
+      });  
     } catch (err) {
-  return res.json({
+      return res.json({
         success: false,
         message: "failed to retrieve data",
         error:err
       });
-  getCharts=async (req,res,next)=>{
+    }
+  }
+  getCharts = async (req,res,next)=>{
     try {
       // const token = req.headers['authorization'] token!=null
       const twoYearsAgo = new Date();
