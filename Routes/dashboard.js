@@ -6,7 +6,7 @@ const dashboard= require(path.join(__dirname , '../Controllers/dashboard'))
 
 
 router.get("/", dashboard.appartmentsData);
-router.get("/allUsers", dashboard.appartmentsData);
+router.get("/allusers", dashboard.allUsers);
 
 
 
