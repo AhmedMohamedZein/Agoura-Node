@@ -25,9 +25,10 @@ class DashBoard {
   };
 
  async getAllUsers(req, res) {
+
     try {
-     let allUsersData =await users.find({},{ name: 1, email: 1, _id: 1, isVerified:1, bids:1, ownedApartments:1 })
-      console.log(allUsersData)
+
+   let allUsersData =await users.find({},{ name: 1, email: 1, _id: 1, isVerified:1, bids:1, ownedApartments:1 })
       
    return res.status(200).json({
           success: true,
@@ -37,9 +38,9 @@ class DashBoard {
     
     } catch (err) {
   return res.json({
-        success: false,
-        message: "failed to retrieve data",
-        error:err
+          success: false,
+          message: "failed to retrieve data",
+          error:err
       });
     }
   }
