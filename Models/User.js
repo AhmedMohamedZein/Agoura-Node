@@ -8,6 +8,8 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     otp: { type: String, required: false },
     phone: { type: String, required: false },
+    image: { type: String },
+    isAdmin: { type: Boolean, requried: true },
     ownedApartments: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Apartment" },
     ],
@@ -17,7 +19,7 @@ const userSchema = new mongoose.Schema(
       { type: mongoose.Schema.Types.ObjectId, ref: "Notification" },
     ],
     cart: [{ type: mongoose.Schema.Types.ObjectId, ref: "Apartment" }],
-    about: { type: String, required: false },
+    isVerified: {type: Boolean, default: false}
   },
   { timestamps: true }
 );

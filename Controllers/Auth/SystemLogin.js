@@ -17,6 +17,7 @@ class SystemLogin extends iLogin {
         if (!validateInputs) {
             return {
                 message : "Data Not Valid",
+                success : false ,
                 status : 400
             } 
         }  
@@ -26,6 +27,7 @@ class SystemLogin extends iLogin {
         if (!foundedUser) {
             return {
                 message : "Invalid Email or Password",
+                success : false ,
                 status : 400
             } 
         } 
@@ -35,14 +37,16 @@ class SystemLogin extends iLogin {
         if (!checkPassword) {     
             return {
                 message : "Invalid  Password",
+                success : false ,
                 status : 400
             }
         }
             
         //create Token
-        var token = Token.createToken(useremail);
+        var token = Token.createToken({email: useremail,isAdmin:foundedUser.isAdmin,userId:foundedUser._id});
         return {
             myToken : token,
+            success : true ,
             status : 200
         }
     }

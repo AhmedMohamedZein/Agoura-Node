@@ -1,10 +1,11 @@
 const userModel = require("../Models/User");
 const validate = require("../Utils/userValidation");
-const LoginStrategy = require('./Auth/LoginStrategy');
-const LoginFactory = require('./Auth/LoginFactory');
+const path = require("path");
+const myEmitter = require(path.join(__dirname, "./Events/verifyEvent"));
 
 
-class AuthController {
+
+class RegisterController {
   async register(req, res) {
     let name = req.body.name;
     let email = req.body.email;
@@ -30,12 +31,15 @@ class AuthController {
       await newUser
         .save()
         .then((user) => {
-          return res.json({
-            success: true,
-            message: "user added successfully",
-          });
-        })
-        .catch((err) => {
+         
+          //emit my event
+          myEmitter.emit('register',newUser.id,res)
+        //   return res.json({
+        //     success: true,
+        //     message: "user added successfully",
+        //   });
+        // })
+        }).catch((err) => {
           return res.json({
             success: false,
             message: "There is an error",
@@ -49,21 +53,6 @@ class AuthController {
       });
   }
 
-  login = async (req, res)=> {
-
-    const logMeIn = LoginFactory.createLoginObject(req.path); // googleObject.login
-    const loginStrategy = new LoginStrategy (logMeIn);
-    const loginResult = await loginStrategy.execute(req.body); //login
-    
-    if ( loginResult.hasOwnProperty('myToken') ){
-      res.header("x-auth-token", loginResult.myToken);
-      return res.status(200).send("you are logged in");
-    } 
-    else {
-      return res.status(loginResult.status).json( loginResult ); // Error message
-    }
-  }
-
 }
 
-module.exports = new AuthController();
+module.exports = new RegisterController();

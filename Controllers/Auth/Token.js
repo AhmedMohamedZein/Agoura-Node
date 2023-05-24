@@ -7,13 +7,23 @@ module.exports = class Token {
 
 
     //send tokin to user
-    static createToken(email) {
+    static createToken(payload) {
         const secret = process.env.TOKEN_SECRET;
-        const token = jwt.sign(email, secret);
+        const token = jwt.sign(payload, secret);
         return token;
     }
 
     static verifyToken(token) {
-        // verifyToken
+        const secret = process.env.TOKEN_SECRET;
+        try {
+            let user=jwt.verify(token, secret);
+            return user;
+        }catch(error){
+            return false; 
+        }
+
+
     }
+    
+    
 }
