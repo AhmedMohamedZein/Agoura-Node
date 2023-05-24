@@ -5,6 +5,10 @@ const dashboard = require(path.join(__dirname, "../Controllers/dashboard"));
 // const HomeController = require(path.join(__dirname , '../Controllers/Home'))
 const isAdmin = require("../Middlewares/isAdmin");
 
-router.get("/", isAdmin, dashboard.appartmentsData);
+router.get("/appartments",isAdmin, dashboard.appartmentsData);
+router.get("/charts",isAdmin, dashboard.getCharts);
+
+
 
 module.exports = router;
+
