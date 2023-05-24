@@ -24,7 +24,7 @@ class DashBoard {
     }
   };
 
- async allUsers(req, res) {
+ async getAllUsers(req, res) {
     try {
      let allUsersData =await users.find({},{ name: 1, email: 1, _id: 1, isVerified:1, bids:1, ownedApartments:1 })
       console.log(allUsersData)
