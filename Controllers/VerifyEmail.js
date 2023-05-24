@@ -1,6 +1,8 @@
 const nodemailer = require("nodemailer");
 const path = require("path");
 const user = require(path.join(__dirname, "../Models/User"));
+var Mailgen = require('mailgen');
+
 
 class VERIFY_EMAIL {
 
@@ -18,12 +20,43 @@ class VERIFY_EMAIL {
     var userId = req.params.id;
     var userEmail= await this.findUser(req)
    
-    let message = {
-        from: "omaralaa0989@gmail.com",
-        to: userEmail,
-        subject: "confirm your Email",
-        html:`Dear user please click the attached link to verify your email http://localhost:9000/verify/confirm/${userId}` ,
+
+    let MailGenerator = new Mailgen({
+          theme: "default",
+          product : {
+              name: "Mailgen",
+              link : 'https://mailgen.js/'
+          }
+      })
+
+
+      var response = {
+        body: {
+            name: 'New Agorian',
+            intro: 'Welcome to agora! We\'re very excited to have you on board.',
+            action: {
+                instructions: 'To get started with agora, please click here:',
+                button: {
+                    color: '#22BC66', // Optional action button color
+                    text: 'Confirm your account',
+                    link: `http://localhost:9000/verify/confirm/${userId}`
+                }
+            },
+            outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.'
+        }
     };
+
+
+
+    let mail = MailGenerator.generate(response)
+    let message = {
+      from: "omaralaa0989@gmail.com",
+      to: userEmail,
+      subject: "confirm your Email",
+      html:mail,
+  };
+
+
 
         transporter
             .sendMail(message)
@@ -37,6 +70,7 @@ class VERIFY_EMAIL {
                 return res.status(500).json({ error });
             });
     }
+
 
     emailVerifier = async (req, res) => {
         try {
