@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     phone: { type: String, required: false },
     image: { type: String },
-    isAdmin: { type: Boolean, requried: true },
+    isAdmin: { type: Boolean, requried: true ,default:false},
     ownedApartments: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Apartment" },
     ],
