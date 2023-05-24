@@ -18,7 +18,7 @@ const ProfileRoutes = require(path.join(__dirname , './Routes/Profile'))
 const cookieParser = require('cookie-parser');
 const dashboardRoutes=require(path.join(__dirname , './Routes/dashboard'))
 const verifyEmailRoute= require(path.join(__dirname,'./Routes/verifyEmail'))
-
+const checkoutRoute=require('./Routes/checkout')
 
 
 //#endregion
@@ -53,8 +53,8 @@ app.use("/bid", bidRoutes);
 app.use("/users", ProfileRoutes);
 app.use("/dashboard", dashboardRoutes);
 app.use("/verify", verifyEmailRoute);
+app.use("/checkout", checkoutRoute)
 //#endregion
-
 
 //#region Database Connetion
 mongoose.connect(process.env.DATABASE);
