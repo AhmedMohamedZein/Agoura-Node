@@ -7,12 +7,8 @@ isUser = async (req, res, next) => {
   let token = req.headers["authorization"];
   if (token) {
     user = Token.verifyToken(token);
-    console.log(user);
-
     if (user.email) {
       let userData = await User.findOne({ email: user.email });
-      console.log(typeof user.email);
-
       userData = handleData(userData);
       req.user = userData;
       next();
