@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     phone: { type: String, required: false },
-    image: { type: String },
+    image: { type: String , default:null },
     isAdmin: { type: Boolean, requried: true },
     ownedApartments: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Apartment" },

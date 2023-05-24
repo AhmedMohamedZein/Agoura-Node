@@ -9,7 +9,7 @@ class ProfileController {
   async getUserProfile(req, res) {
     const id = req.params.id;
     try {
-      const user = await User.findOne({ _id: id });
+      const user = await User.findOne({ _id: id }).populate('ownedApartments').populate('bids').populate('orders');
       if (!user) {
         return res.status(404).json({ error: "User Not Found" });
       }
@@ -76,7 +76,7 @@ class ProfileController {
 
   async getUserBids(req, res) {
     try {
-      const bidsData = await Bid.findOne({ user: req.user._id });
+      const bidsData = await Bid.find({ user: req.user._id });
       return res.status(200).json({
         success: true,
         message: "data fetched successfully",
@@ -91,7 +91,8 @@ class ProfileController {
   }
   async getUserOrders(req, res) {
     try {
-      const ordersData = await Order.findOne({ user: req.user._id });
+      const ordersData = await Order.find({ user: req.user._id });
+      console.log(ordersData)
       return res.status(200).json({
         success: true,
         message: "data fetched successfully",
@@ -106,7 +107,10 @@ class ProfileController {
   }
   async getUserApartments(req, res) {
     try {
-      const apartmentsData = await Apartment.findOne({ user: req.user._id });
+      console.log(req.user._id)
+      const apartmentsData = await Apartment.find({owner: req.user._id});
+
+      console.log(apartmentsData)
       return res.status(200).json({
         success: true,
         message: "data fetched successfully",
