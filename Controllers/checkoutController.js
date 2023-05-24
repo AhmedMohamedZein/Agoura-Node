@@ -3,30 +3,31 @@ const path = require("path");
 
 
 class Checkout{
+
     async createPaymentObject(req,res){
-      
+      console.log(req)
 
-        try {
-            const { amount, currency, description, source } = req.body;
-    
-            const charge = await stripe.charges.create({
-                amount,
-                currency,
-                description,
-                source
-            });
-    
-            res.status(200).json({ message: 'Payment processed successfully' });
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({ error: err.message });
+        const session = await stripe.checkout.sessions.create({
+            line_items: [
+              {
+                // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                price: '{{PRICE_ID}}',
+                quantity: 1,
+              },
+            ],
+            mode: 'payment',
+            success_url: `${YOUR_DOMAIN}/success.html`,
+            cancel_url: `${YOUR_DOMAIN}/cancel.html`,
+          });
+        
+          res.redirect(303, session.url);
         }
-    
+        
 
 }
 
 
-}
+
 module.exports=new Checkout();
 
 

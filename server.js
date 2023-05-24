@@ -19,7 +19,7 @@ const ProfileRoutes = require(path.join(__dirname , './Routes/Profile'))
 const cookieParser = require('cookie-parser');
 const dashboardRoutes=require(path.join(__dirname , './Routes/dashboard'))
 const  verifyEmailRoute= require(path.join(__dirname,'./Routes/verifyEmail'))
-const  chekout= require(path.join(__dirname,'./Routes/checkout'))
+const  checkout= require(path.join(__dirname,'./Routes/checkout'))
 
 
 

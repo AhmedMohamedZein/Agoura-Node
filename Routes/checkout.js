@@ -3,7 +3,7 @@ const router = express.Router();
 const path = require('path');
 const payment= require(path.join(__dirname , '../Controllers/checkoutController'))
 
-router.get("/",payment.createPaymentObject);
+router.post("/",payment.createPaymentObject);
 
 
 module.exports = router;
