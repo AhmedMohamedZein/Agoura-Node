@@ -24,21 +24,22 @@ class DashBoard {
     }
   };
 
-  allUsers(req, res) {
+ async allUsers(req, res) {
     try {
-      allUsersData = users.find().exec()
-      console.log(this.allUsersData)
-      if (allUsers) {
-        res.status(200).json({
+     let allUsersData =await users.find({},{ name: 1, email: 1, _id: 1, isVerified:1, bids:1, ownedApartments:1 })
+      console.log(allUsersData)
+      
+   return res.status(200).json({
           success: true,
           message: "data retrieved successfully",
-          data: this.allUsersData,
+          data: allUsersData,
         });
-      }
+    
     } catch (err) {
-      res.json({
+  return res.json({
         success: false,
         message: "failed to retrieve data",
+        error:err
       });
     }
   }
