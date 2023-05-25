@@ -126,7 +126,7 @@ class PlaceController {
     try {
       let itemId = req.params.id;
       let appartment = await appartmentModel
-        .findOne({ itemId })
+        .findOne({ itemId ,status:{$eq:"approved"}})
         .populate({
           path: "bids",
           options: { sort: { amountMoney: -1 }, limit: 1 },

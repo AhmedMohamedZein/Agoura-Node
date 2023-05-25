@@ -5,7 +5,6 @@ const User = require(path.join(__dirname, "../Models/User"));
 
 isAdmin = async (req, res, next) => {
   let token = req.headers["authorization"];
-  console.log(token);
   if (token) {
     user = Token.verifyToken(token);
 

@@ -10,7 +10,7 @@ class HomeController {
   async getData(req, res) {
     try {
       const token = req.headers["authorization"];
-      const apartments = await apartment.find({});
+      const apartments = await apartment.find({status:"approved"});
       if (token != "null") {
         const userInfo = auth.verifyToken(token);
         const userData = await user.findOne({ email: userInfo.email });
