@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     otp: { type: String, required: false },
     phone: { type: String, required: false },
-    image: { type: String },
+    image: { type: String ,default:"https://res.cloudinary.com/drjq54gkm/image/upload/v1685120931/avatar02_bwdts9.png"},
     isAdmin: { type: Boolean, requried: true ,default:false},
     ownedApartments: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Apartment" },
