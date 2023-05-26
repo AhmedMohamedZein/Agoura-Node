@@ -2,6 +2,7 @@ const nodemailer = require("nodemailer");
 const path = require("path");
 const user = require(path.join(__dirname, "../Models/User"));
 var Mailgen = require('mailgen');
+const PORT = process.env.PORT || 9000;
 
 
 class VERIFY_EMAIL {
@@ -36,7 +37,7 @@ class VERIFY_EMAIL {
           button: {
           color: '#22BC66', // Optional action button color
           text: 'Confirm your account',
-          link: `http://localhost:9000/verify/confirm/${userId}`
+          link: `http://localhost:${PORT}/verify/confirm/${userId}`
           }
         },
         outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.'
@@ -79,7 +80,7 @@ class VERIFY_EMAIL {
           });
         }
     
-        return res.redirect(`http://localhost:4200/login`);
+        return res.redirect(`https://agora-4.web.app/login`);
       } 
     } catch (err) {
         return res.status(400).json({
