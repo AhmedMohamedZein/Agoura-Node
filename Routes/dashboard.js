@@ -6,6 +6,8 @@ const dashboard = require(path.join(__dirname, "../Controllers/dashboard"));
 const isAdmin = require("../Middlewares/isAdmin");
 
 router.get("/appartments",isAdmin, dashboard.appartmentsData);
+router.get("/appartments/:id",isAdmin, dashboard.placeDetails);
+
 router.get("/charts",isAdmin, dashboard.getCharts);
 router.get("/allusers", isAdmin ,dashboard.getAllUsers);
 

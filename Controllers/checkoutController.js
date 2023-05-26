@@ -4,7 +4,7 @@ const notificationModel = require("../Models/Notification");
 const userModel = require("../Models/User");
 const orderModel = require("../Models/Order");
 const updatePlaceValidation = require('../Utils/createPlaceValidation');
-
+const PORT = process.env.PORT || 9000;
 
 
 class checkoutController {
@@ -83,8 +83,8 @@ class checkoutController {
           },
         ],
         mode: 'payment',
-        success_url: `http://localhost:9000/checkout/success/${apartment._id}`,
-        cancel_url: `http://localhost:9000/checkout/fail/${apartment._id}`,
+        success_url: `http://localhost:${PORT}/checkout/success/${apartment._id}`,
+        cancel_url: `http://localhost:${PORT}/checkout/fail/${apartment._id}`,
       });
 
       return res.status(201).json({
@@ -131,7 +131,7 @@ class checkoutController {
       { _id: apartment.owner },
       { $push: { notifications: notification._id } }
     );
-      return  res.redirect("http://localhost:4200/PaymentSuccess")
+      return  res.redirect("https://agora-4.web.app/PaymentSuccess")
 
     }catch(err){
       // Return a 200 response to acknowledge receipt of the event
@@ -145,7 +145,7 @@ class checkoutController {
   }
   fail= async(req, res) => {
     console.log("fail")
-    return res.redirect("http://localhost:4200/PaymentFail")
+    return res.redirect("https://agora-4.web.app/PaymentFail")
   }
 
 
