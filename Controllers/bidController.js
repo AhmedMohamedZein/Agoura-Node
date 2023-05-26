@@ -230,7 +230,6 @@ class bidController {
       });
     }
   }
-
   async cancel(req, res, next) {
     try{
       let apartmentID = req.body._id;
@@ -247,7 +246,9 @@ class bidController {
       let notification=await notificationModel.create({
         user:appartment.owner,
         message:"unfortunately your bid have been cancel.",
-        href:`/place/${appartment.itemId}`
+        // href:`/place/${appartment.itemId}`
+        href:'/home'
+
       })
       await userModel.findByIdAndUpdate({_id:appartment.owner},{$push: { notifications: notification._id }})
 
