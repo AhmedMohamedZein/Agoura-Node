@@ -73,7 +73,7 @@ class NotifyHighestBidderScheduler {
                 let notification = await NotificationModel.create({
                     user: highestBid.user,
                     message: `congratulations you won the bid you can go and finish payment process you have 24 hours to finish the payment payment ends on ${expireDate}.`,
-                    href: `/place/${apartment.itemId}/history` // ToDo needs to be updated
+                    href: `/checkout/${apartment.itemId}` // ToDo needs to be updated
                 })
                 apartment.status = "completed"
                 apartment.save()

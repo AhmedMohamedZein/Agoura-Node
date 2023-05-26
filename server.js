@@ -8,24 +8,24 @@ const path = require("path");
 const NotificationScheduler = require("./Utils/NotificationScheduler");
 const EndedBidsScheduler = require("./Utils/EndedBidsScheduler.js");
 const NotifyHighestBidderScheduler = require("./Utils/NotifyHighestBidderScheduler.js");
-
-
 const userRoutes = require("./Routes/register");
-const loginRoutes = require("./Routes/login");
-const HomeRoute = require(path.join(__dirname, "./Routes/Home"));
+const loginRoutes = require('./Routes/login');
+const HomeRoute = require(path.join(__dirname , './Routes/Home'));
+const forgetPasswordRoutes = require('./Routes/forgetPasswordRoutes');
 const placeRoutes = require(path.join(__dirname, "./Routes/place"));
 const bidRoutes = require(path.join(__dirname, "./Routes/bid"));
 const ProfileRoutes = require(path.join(__dirname , './Routes/Profile'))
 const cookieParser = require('cookie-parser');
 const dashboardRoutes=require(path.join(__dirname , './Routes/dashboard'))
-const  verifyEmailRoute= require(path.join(__dirname,'./Routes/verifyEmail'))
+const verifyEmailRoute= require(path.join(__dirname,'./Routes/verifyEmail'))
+const checkoutRoute=require('./Routes/checkout')
 
 
 //#endregion
 
 //#region config
 dotenv.config();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 9000;
 const app = express();
 //#endregion
 
@@ -45,15 +45,15 @@ app.get("/", (req, res) => {
 
 //#region
 app.use("/register", userRoutes);
-app.use("/auth", loginRoutes);
+app.use('/auth' , loginRoutes);
+app.use('/forget-password' , forgetPasswordRoutes);
 app.use("/home", HomeRoute);
 app.use("/place", placeRoutes);
 app.use("/bid", bidRoutes);
 app.use("/users", ProfileRoutes);
 app.use("/dashboard", dashboardRoutes);
 app.use("/verify", verifyEmailRoute);
-
-
+app.use("/checkout", checkoutRoute)
 //#endregion
 
 //#region Database Connetion
