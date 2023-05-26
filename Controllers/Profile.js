@@ -92,7 +92,7 @@ class ProfileController {
   async getUserOrders(req, res) {
     try {
       const ordersData = await Order.find({ user: req.user._id });
-      console.log(ordersData)
+      
       return res.status(200).json({
         success: true,
         message: "data fetched successfully",
@@ -107,10 +107,9 @@ class ProfileController {
   }
   async getUserApartments(req, res) {
     try {
-      console.log(req.user._id)
+      
       const apartmentsData = await Apartment.find({owner: req.user._id});
-
-      console.log(apartmentsData)
+      
       return res.status(200).json({
         success: true,
         message: "data fetched successfully",
