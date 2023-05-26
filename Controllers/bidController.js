@@ -121,7 +121,7 @@ class bidController {
         });
       }
 
-      if(appartment.owner!=user._id && !user.isAdmin){
+      if(appartment.owner.toString()!=user._id.toString() && !user.isAdmin){
         return res.status(401).json({
           success:false,
           message: "you are no authorizied to update this place.",
