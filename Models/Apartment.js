@@ -14,7 +14,7 @@ const apartmentSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ["luxurious", "studio", "villa", "palace"],
+      enum: ["luxurious", "studio", "villa", "palace","appartment"],
     },
     features: {
       bedRooms: { type: Number, required: true },

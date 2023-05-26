@@ -64,7 +64,7 @@ class PlaceController {
     const isValid = createPlaceValidation(req.body);
     if ( !isValid ){
       const errors = createPlaceValidation.errors;
-      res.status(400).json({
+      return res.status(400).json({
         success : false ,
         message : errors
       });
@@ -72,7 +72,7 @@ class PlaceController {
     const token = req.headers.authorization
     const user = Token.verifyToken(token);
     if ( !token && !user ){ // token is not empty and valid
-      res.status(401).json({
+      return res.status(401).json({
         success : false ,
         message : "Unauthorized"
       });
@@ -84,6 +84,7 @@ class PlaceController {
       title: req.body.title,
       itemId: uniqueId,
       aboutPlace: req.body.aboutPlace,
+      category:req.body.category,
       address: {
         country: req.body.address.country,
         city: req.body.address.city,
@@ -109,14 +110,14 @@ class PlaceController {
     try {
       await apartmentOwner.updateOne( { $push: { ownedApartments: newApartment._id } } );
       await newApartment.save();
-      res.status(201).json({
+      return res.status(201).json({
         success: true,
         message: "Apartment created successfully",
         itemId:uniqueId
       });
     } catch (error) {
       console.error(error);
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         message: "Server error"
       })

@@ -104,7 +104,7 @@ class HomeController {
     let category = req.params.category;
     console.log(req.params.category);
     try {
-      const apartments = await apartment.find({ category: category });
+      const apartments = await apartment.find({ category: category ,status:"approved"});
       return res.json({
         success: true,
         message: "appartements retreived successfully",
