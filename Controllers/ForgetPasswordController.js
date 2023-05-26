@@ -102,7 +102,11 @@ class ForgetPasswordController {
       userverify.resetToken = resetToken;
       await userverify.save();
 
-      res.status(200).json({ resetToken: resetToken });
+      await res.cookie('resetToken', resetToken, {
+        httpOnly: false
+      })
+
+      res.status(200).json({ message: "OTP verified successfully" });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Something went wrong" });
@@ -111,10 +115,13 @@ class ForgetPasswordController {
 
   async resetPassword(req, res) {
     try {
-      const resetToken = req.body.resetToken;
+      //const resetToken = req.body.resetToken;
       const newPassword = req.body.newPassword;
       // Verify the reset token
+      console.log(req.cookies);
+      console.log(resetToken);
       const decodedToken = jwt.verify(resetToken, process.env.JWT_SECRET);
+      
 
       console.log(decodedToken);
       // Find the user by ID and reset their password
