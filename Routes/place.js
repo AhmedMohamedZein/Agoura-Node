@@ -7,6 +7,8 @@ const uploadImage = require("../Middlewares/createPlaceMiddleware/uploadImage");
 const upload = multer();
 
 router.get("/:id/history", placeConroller.history);
+router.get("/:id/edit", placeConroller.getPendingBids);
+
 router.post(
   "/create",
   upload.array("photo"),

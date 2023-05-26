@@ -153,6 +153,37 @@ class PlaceController {
       });
     }
   }
+  async getPendingBids(req, res, next) {
+    try {
+      let itemId = req.params.id;
+      let appartment = await appartmentModel
+        .findOne({ itemId ,status:{$eq:"pending"}})
+        .populate({
+          path: "bids",
+          options: { sort: { amountMoney: -1 }, limit: 1 },
+        });
+      
+      if (!appartment) {
+        return res.status(404).json({
+          success: false,
+          message: "resource not found",
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        message: "success",
+        data: {
+          appartment,
+        },
+      });
+    } catch (err) {
+      return res.status(500).json({
+        success: false,
+        message: err.message,
+
+      });
+    }
+  }
 }
 
 module.exports = new PlaceController();
