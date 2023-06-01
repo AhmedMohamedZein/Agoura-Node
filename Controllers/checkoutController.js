@@ -5,7 +5,7 @@ const userModel = require("../Models/User");
 const orderModel = require("../Models/Order");
 const updatePlaceValidation = require('../Utils/createPlaceValidation');
 const PORT = process.env.PORT || 9000;
-
+const websiteUrl=process.env.WEBSITE_URL
 
 class checkoutController {
 
@@ -40,7 +40,7 @@ class checkoutController {
   }
   checkout = async (req, res) => {
     try {
-      let id = req.params.id
+      let id = req.body.itemId
       let apartment = await appartmentModel.findOne({ itemId: id, status: "completed" })
         .populate({ path: "bids", match: { expired: false }, options: { sort: { amountMoney: -1 }, limit: 1 } })
 
@@ -131,7 +131,8 @@ class checkoutController {
       { _id: apartment.owner },
       { $push: { notifications: notification._id } }
     );
-      return  res.redirect("https://agora-4.web.app/PaymentSuccess")
+      // return  res.redirect("https://agora-4.web.app/PaymentSuccess")
+      return  res.redirect(`${websiteUrl}/PaymentSuccess`)
 
     }catch(err){
       // Return a 200 response to acknowledge receipt of the event
@@ -145,7 +146,8 @@ class checkoutController {
   }
   fail= async(req, res) => {
     console.log("fail")
-    return res.redirect("https://agora-4.web.app/PaymentFail")
+    // return res.redirect("https://agora-4.web.app/PaymentFail")
+    return res.redirect(`${websiteUrl}/PaymentFail`)
   }
 
 
