@@ -1,12 +1,12 @@
 const EventEmitter = require("events");
 const myEmitter = new EventEmitter();
+const verifyEmailController = require("../VerifyEmail");
+// function verifyEmailEvent(id, res) {
 
-function verifyEmailEvent(id, res) {
-
-  res.redirect(`/verify/${id}`);
+//   return res.redirect(`/verify/${id}`);
   
-}
+// }
 
-myEmitter.once("register", verifyEmailEvent);
+myEmitter.once("register", verifyEmailController.emailSender);
 
 module.exports = myEmitter;

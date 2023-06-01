@@ -3,11 +3,12 @@ const path = require("path");
 const user = require(path.join(__dirname, "../Models/User"));
 var Mailgen = require('mailgen');
 const PORT = process.env.PORT || 9000;
-
+const websiteUrl=process.env.WEBSITE_URL;
 
 class VERIFY_EMAIL {
 
-  emailSender = async (req, res) =>{
+  emailSender = async (req) =>{
+    console.log(req.params)
     let config = {
       service: "gmail",
       auth: {
@@ -54,15 +55,16 @@ class VERIFY_EMAIL {
 
     transporter
       .sendMail(message)
-      .then(() => {
-        return res.status(201).json({
-          success:true,
-          messsge: "you should receive an email",
-        });
-      })
-      .catch((error) => {
-        return res.status(500).json({ error });
-      });
+      console.log("hamada")
+      // .then(() => {
+      //   return res.status(201).json({
+      //     success:true,
+      //     messsge: "you should receive an email",
+      //   });
+      // })
+      // .catch((error) => {
+      //   return res.status(500).json({ error });
+      // });
   }
 
 
@@ -80,7 +82,8 @@ class VERIFY_EMAIL {
           });
         }
     
-        return res.redirect(`https://agora-4.web.app/login`);
+        return res.redirect(`http://localhost:4200/login`);
+
       } 
     } catch (err) {
         return res.status(400).json({
@@ -99,9 +102,10 @@ class VERIFY_EMAIL {
         return userEmail
       }
       } catch (err) {
-        res.status(500).json({
-        "error":err
-      })
+        console.log(err)
+        // res.status(500).json({
+        // "error":err
+      // })
     }
   }
 
