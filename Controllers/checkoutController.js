@@ -83,8 +83,8 @@ class checkoutController {
           },
         ],
         mode: 'payment',
-        success_url: `${websiteUrl}/checkout/success/${apartment._id}`,
-        cancel_url: `${websiteUrl}/checkout/fail/${apartment._id}`,
+        success_url: `http://localhost:${PORT}/checkout/success/${apartment._id}`,
+        cancel_url: `http://localhost:${PORT}/checkout/fail/${apartment._id}`,
       });
 
       return res.status(201).json({
