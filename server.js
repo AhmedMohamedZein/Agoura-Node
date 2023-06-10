@@ -68,11 +68,11 @@ mongoose.connection.on("connected", () => {
 const notificationScheduler = new NotificationScheduler("0 0 * * *");
 notificationScheduler.start();
 
-const endedBidsScheduler = new EndedBidsScheduler("0 0/1 * * *");
-// const endedBidsScheduler = new EndedBidsScheduler("* * * * *");
+// const endedBidsScheduler = new EndedBidsScheduler("0 0/1 * * *");
+const endedBidsScheduler = new EndedBidsScheduler("* * * * *");
 endedBidsScheduler.start();
-const notifyHighestBidderScheduler = new NotifyHighestBidderScheduler("0 0/1 * * *");
-// const notifyHighestBidderScheduler = new NotifyHighestBidderScheduler("* * * * *");
+// const notifyHighestBidderScheduler = new NotifyHighestBidderScheduler("0 0/1 * * *");
+const notifyHighestBidderScheduler = new NotifyHighestBidderScheduler("* * * * *");
 notifyHighestBidderScheduler.start();
 //#endregion
 

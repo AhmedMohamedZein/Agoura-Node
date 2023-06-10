@@ -38,7 +38,7 @@ class VERIFY_EMAIL {
           button: {
           color: '#22BC66', // Optional action button color
           text: 'Confirm your account',
-          link: `http://localhost:${PORT}/verify/confirm/${userId}`
+          link: `${websiteUrl}/verify/confirm/${userId}`
           }
         },
         outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.'
@@ -55,7 +55,7 @@ class VERIFY_EMAIL {
 
     transporter
       .sendMail(message)
-      console.log("hamada")
+      // console.log("hamada")
       // .then(() => {
       //   return res.status(201).json({
       //     success:true,
@@ -82,7 +82,7 @@ class VERIFY_EMAIL {
           });
         }
     
-        return res.redirect(`http://localhost:4200/login`);
+        return res.redirect(`${websiteUrl}/login`);
 
       } 
     } catch (err) {
