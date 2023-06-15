@@ -40,69 +40,79 @@ class checkoutController {
   }
   checkout = async (req, res) => {
     try {
-      let id = req.body.itemId
+      let id = req.body.itemId;
       let apartment = await appartmentModel.findOne({ itemId: id, status: "completed" })
-        .populate({ path: "bids", match: { expired: false }, options: { sort: { amountMoney: -1 }, limit: 1 } })
-
-      if(req.user._id.toString()!=apartment.bids[0].user.toString()){
+        .populate({ path: "bids", match: { expired: false }, options: { sort: { amountMoney: -1 }, limit: 1 } });
+      
+      if (req.user._id.toString() !== apartment.bids[0].user.toString()) {
         return res.status(403).json({
-          success:false,
-          message:"you are not authorized to complete this purchase."
-        })
-      }
-      let amountMoney = Math.round(apartment.bids[0].amountMoney*1.14)
-      const stripe = require('stripe')(process.env.STRIPE_SECRET);
-      let product=await stripe.products.create({
-        name: apartment.title,
-        description: apartment.title,
-        images:apartment.images
-
-      })
-      .then(product => {
-        return stripe.prices.create({
-          product: product.id,
-          unit_amount: amountMoney, // Provide the price in the smallest currency unit (e.g., cents)
-          currency: 'usd' // Set the currency (e.g., 'usd' for US dollars)
-        })
-        .catch(error => {
-          console.error('Error creating price:', error);
+          success: false,
+          message: "You are not authorized to complete this purchase."
         });
-      })
-      .catch(error => {
+      }
+      
+      let amountMoney = Math.round(apartment.bids[0].amountMoney * 1.14) * 100;
+      const stripe = require('stripe')(process.env.STRIPE_SECRET);
+      
+      let product;
+      try {
+        product = await stripe.products.create({
+          name: apartment.title,
+          description: apartment.title,
+          images: apartment.images
+        });
+      } catch (error) {
         console.error('Error creating product:', error);
-      });
+        return res.status(400).json({
+          success: false,
+          message: 'Error creating product'
+        });
+      }
       
-
-      console.log(product)
-      const session = await stripe.checkout.sessions.create({
-        line_items: [
-          {
-            // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-            price: product.id,
-            quantity: 1
-          },
-        ],
-        mode: 'payment',
-        success_url: `http://localhost:${PORT}/checkout/success/${apartment._id}`,
-        cancel_url: `http://localhost:${PORT}/checkout/fail/${apartment._id}`,
-      });
-
-      return res.status(201).json({
+      let session;
+      try {
+        const price = await stripe.prices.create({
+          product: product.id,
+          unit_amount: amountMoney,
+          currency: 'usd'
+        });
+  
+        session = await stripe.checkout.sessions.create({
+          line_items: [
+            {
+              price: price.id,
+              quantity: 1
+            },
+          ],
+          mode: 'payment',
+          success_url: `http://localhost:${PORT}/checkout/success/${apartment._id}`,
+          cancel_url: `http://localhost:${PORT}/checkout/fail/${apartment._id}`,
+        });
+      } catch (error) {
+        console.error('Error creating session:', error);
+        return res.status(400).json({
+          success: false,
+          message: 'Error creating session'
+        });
+      }
+  
+      console.log(product);
+  
+      return res.status(200).json({
         success: true,
-        message: "payment Faild please try again.",
-        url:session.url
+        message: 'Payment initiated successfully.',
+        url: session.url
       });
-      
+  
     } catch (err) {
-      console.log(err)
+      console.log(err);
       return res.status(400).json({
         success: false,
-        message: err.message,
+        message: err.message
       });
     }
-
-
-  }
+  };
+  
   success= async(req, res) => {
     console.log("success")
     try {
