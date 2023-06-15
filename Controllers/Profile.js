@@ -76,7 +76,8 @@ class ProfileController {
 
   async getUserBids(req, res) {
     try {
-      const bidsData = await Bid.find({ user: req.user._id });
+      const bidsData = await Bid.find({ user: req.user._id }).populate('apartment');
+      console.log(bidsData)
       return res.status(200).json({
         success: true,
         message: "data fetched successfully",
