@@ -90,19 +90,43 @@ class ProfileController {
       });
     }
   }
+  // async getUserOrders(req, res) {
+  //   try {
+  //     const ordersData = await Order.find({ user: req.user._id });
+      
+  //     return res.status(200).json({
+  //       success: true,
+  //       message: "data fetched successfully",
+  //       data: ordersData,
+  //     });
+  //   } catch (error) {
+  //     return res.status(500).json({
+  //       success: false,
+  //       message: "there is something wrong",
+  //     });
+  //   }
+  // }
   async getUserOrders(req, res) {
     try {
-      const ordersData = await Order.find({ user: req.user._id });
+      const ordersData = await Order.find({ user: req.user._id }).populate('apartment', 'title');
       
+      const ordersWithApartmentName = ordersData.map(order => {
+        return {
+          orderId: order._id,
+          apartmentTitle: order.apartment.title,
+          // Add other relevant fields from the order object as needed
+        };
+      });
+  
       return res.status(200).json({
         success: true,
-        message: "data fetched successfully",
+        message: "Data fetched successfully",
         data: ordersData,
       });
     } catch (error) {
       return res.status(500).json({
         success: false,
-        message: "there is something wrong",
+        message: "Something went wrong",
       });
     }
   }
