@@ -121,7 +121,7 @@ class bidController {
         });
       }
 
-      if(appartment.owner!=user._id && !user.isAdmin){
+      if(appartment.owner.toString()!=user._id.toString() && !user.isAdmin){
         return res.status(401).json({
           success:false,
           message: "you are no authorizied to update this place.",
@@ -229,6 +229,45 @@ class bidController {
         message: err.message,
       });
     }
+  }
+  async cancel(req, res, next) {
+    try{
+      let apartmentID = req.body._id;
+      
+      let appartment = await appartmentModel
+        .findOneAndUpdate({ _id:apartmentID },{status:"canceled"},{new:true})
+
+      if(!appartment){
+        return res.status(404).json({
+          success:false,
+          message: "appartment not found.",
+        });
+      }
+      let notification=await notificationModel.create({
+        user:appartment.owner,
+        message:"unfortunately your bid have been cancel.",
+        // href:`/place/${appartment.itemId}`
+        href:'/home'
+
+      })
+      await userModel.findByIdAndUpdate({_id:appartment.owner},{$push: { notifications: notification._id }})
+
+      return res.status(201).json({
+        success: true,
+        message: "bid canceled successfully.",
+        data:{
+          appartment
+        }
+      });
+    }catch(err){
+      console.log(err)
+      return res.status(400).json({
+        success:false,
+        message: err.message,
+      });
+    }
+    
+      
   }
 
 }

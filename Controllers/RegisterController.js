@@ -27,30 +27,19 @@ class RegisterController {
       password,
     });
 
-    if (validate(req.body) && password === confirmPassword) {
-      await newUser
-        .save()
-        .then((user) => {
-         
-          //emit my event
-          myEmitter.emit('register',newUser.id,res)
-        //   return res.json({
-        //     success: true,
-        //     message: "user added successfully",
-        //   });
-        // })
-        }).catch((err) => {
-          return res.json({
-            success: false,
-            message: "There is an error",
-            error: err.message,
-          });
-        });
-    } else
+    if (validate(req.body) && password !== confirmPassword) {
       return res.json({
         success: false,
         message: "validation error",
       });
+    }
+    await newUser.save()
+    req.params.id=newUser._id.toString();
+    myEmitter.emit('register',req)
+    return res.status(201).json({
+      success: true,
+      message: "please check your email to verify your account.",
+    });
   }
 
 }

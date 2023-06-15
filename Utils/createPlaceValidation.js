@@ -61,6 +61,7 @@ const createPlace = {
   type: "object",
   properties: {
     title: { type: "string"},
+    category: { type: "string"},
     address: addressSchema,
     features : featuresSchema,
     aboutPlace : { type: "string"},
@@ -89,7 +90,7 @@ const createPlace = {
       },
     // If there a problem with Images, the system will throw an error and a resposne will be sent to the user, it will not pass to this step.
   },
-  required: ["title", "address", "features","aboutPlace","startBid","duration","agreeToTerms", "images"],
+  required: ["title", "address", "features","aboutPlace","startBid","duration","agreeToTerms", "images","category"],
   additionalProperties: false
 };
 

@@ -9,7 +9,6 @@ const User = require('../Models/User');
 class PlaceController {
   async history(req, res, next) {
     let itemId = req.params.id;
-
     let appartment = await appartmentModel.findOne({ itemId }).populate({
       path: "bids",
       options: {
@@ -18,30 +17,34 @@ class PlaceController {
       },
       populate: {
         path: "user",
-        options: { select: "_id" },
+        options: { _id: 1, name: 1 }, // Include the 'name' field of the user
       },
     });
-    if ( !appartment ){
-      console.log(appartment);
+    if (!appartment) {
       return res.status(404).json({
-        success:false,
-        message: "appartment not found.",
+        success: false,
+        message: "Apartment not found.",
       });
     }
-
     let currentBid = await appartmentModel
       .findOne({ itemId })
       .populate({ path: "bids", options: { sort: { amountMoney: -1 } } })
       .limit(1);
-
     let numberOfBidders = [
       ...new Set(currentBid.bids.map((item) => item.user.toString())),
     ];
-    if(currentBid.bids.length >0){
-      currentBid=currentBid.bids[0].amountMoney
-    }else{
-      currentBid=appartment.startBid
-    }
+    let currentBidAmount = currentBid.bids.length > 0 ? currentBid.bids[0].amountMoney : appartment.startBid;
+  
+    // Prepare the history of bids with user names
+    let historyOfBids = appartment.bids.map((bid) => {
+      return {
+        _id: bid._id,
+        date: bid.date,
+        amountMoney: bid.amountMoney,
+        user: bid.user.name, // Include the 'name' field of the user
+      }; 
+    });
+  
     return res.status(201).json({
       success: true,
       data: {
@@ -49,12 +52,12 @@ class PlaceController {
         aboutPlace: appartment.aboutPlace,
         image: appartment.images[0],
         itemNumber: appartment.itemId,
-        currentBid: currentBid,
+        currentBid: currentBidAmount,
         numberOfBids: appartment.bids.length,
         numberOfBidders: numberOfBidders.length,
         timeLeft: appartment.timeLeft,
         duration: appartment.duration,
-        historyOfBids: appartment.bids,
+        historyOfBids: historyOfBids,
         status: appartment.status
       },
     });
@@ -65,7 +68,7 @@ class PlaceController {
     const isValid = createPlaceValidation(req.body);
     if ( !isValid ){
       const errors = createPlaceValidation.errors;
-      res.status(400).json({
+      return res.status(400).json({
         success : false ,
         message : errors
       });
@@ -73,7 +76,7 @@ class PlaceController {
     const token = req.headers.authorization
     const user = Token.verifyToken(token);
     if ( !token && !user ){ // token is not empty and valid
-      res.status(401).json({
+      return res.status(401).json({
         success : false ,
         message : "Unauthorized"
       });
@@ -85,6 +88,7 @@ class PlaceController {
       title: req.body.title,
       itemId: uniqueId,
       aboutPlace: req.body.aboutPlace,
+      category:req.body.category,
       address: {
         country: req.body.address.country,
         city: req.body.address.city,
@@ -110,14 +114,14 @@ class PlaceController {
     try {
       await apartmentOwner.updateOne( { $push: { ownedApartments: newApartment._id } } );
       await newApartment.save();
-      res.status(201).json({
+      return res.status(201).json({
         success: true,
         message: "Apartment created successfully",
         itemId:uniqueId
       });
     } catch (error) {
       console.error(error);
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         message: "Server error"
       })
@@ -127,7 +131,38 @@ class PlaceController {
     try {
       let itemId = req.params.id;
       let appartment = await appartmentModel
-        .findOne({ itemId })
+        .findOne({ itemId ,status:{$eq:"approved"}})
+        .populate({
+          path: "bids",
+          options: { sort: { amountMoney: -1 }, limit: 1 },
+        });
+      
+      if (!appartment) {
+        return res.status(404).json({
+          success: false,
+          message: "resource not found",
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        message: "success",
+        data: {
+          appartment,
+        },
+      });
+    } catch (err) {
+      return res.status(500).json({
+        success: false,
+        message: err.message,
+
+      });
+    }
+  }
+  async getPendingBids(req, res, next) {
+    try {
+      let itemId = req.params.id;
+      let appartment = await appartmentModel
+        .findOne({ itemId ,status:{$eq:"pending"}})
         .populate({
           path: "bids",
           options: { sort: { amountMoney: -1 }, limit: 1 },
