@@ -55,6 +55,7 @@ class PlaceController {
         timeLeft: appartment.timeLeft,
         duration: appartment.duration,
         historyOfBids: appartment.bids,
+        status: appartment.status
       },
     });
   }
