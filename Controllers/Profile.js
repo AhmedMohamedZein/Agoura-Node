@@ -90,22 +90,6 @@ class ProfileController {
       });
     }
   }
-  // async getUserOrders(req, res) {
-  //   try {
-  //     const ordersData = await Order.find({ user: req.user._id });
-      
-  //     return res.status(200).json({
-  //       success: true,
-  //       message: "data fetched successfully",
-  //       data: ordersData,
-  //     });
-  //   } catch (error) {
-  //     return res.status(500).json({
-  //       success: false,
-  //       message: "there is something wrong",
-  //     });
-  //   }
-  // }
   async getUserOrders(req, res) {
     try {
       const ordersData = await Order.find({ user: req.user._id }).populate('apartment', 'title');
